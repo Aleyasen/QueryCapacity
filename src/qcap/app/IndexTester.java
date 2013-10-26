@@ -91,7 +91,7 @@ public class IndexTester {
             testPerson_Continent(offset, "Person-Continent-1.txt", "person-400-1.txt");
             //testTVAll(offset);
         } else {
-            getQueriesCount(Constants.STYPE_TV);
+            Query.getQueriesCount(Constants.STYPE_TV);
         }
 
         //testDF();
@@ -489,6 +489,7 @@ public class IndexTester {
         int rejected = 0;
         double precision_all_3 = 0;
         double precision_all_5 = 0;
+        double precision_all_10 = 0;
         double mrr_all = 0;
         System.out.println("Queries#: " + queries.size());
         int countQ = 0;
@@ -505,6 +506,9 @@ public class IndexTester {
                 precision_all_3 += precisionAt3;
                 final double precisionAt5 = ScoringUtil.precisionAtK(results, q, 5);
                 precision_all_5 += precisionAt5;
+                final double precisionAt10 = ScoringUtil.precisionAtK(results, q, 10);
+                precision_all_10 += precisionAt10;
+                
                 final double MRR = ScoringUtil.MRR(results, q);
                 mrr_all += MRR;
                 System.out.println("#" + count);
@@ -512,12 +516,14 @@ public class IndexTester {
                 System.out.println("Results#:" + results.size());
                 System.out.println("P@3:" + precisionAt3);
                 System.out.println("P@5:" + precisionAt5);
+                System.out.println("P@10:" + precisionAt10);
                 System.out.println("MRR:" + MRR);
                 System.out.println();
                 System.out.println("Precision3-UpToHere:" + precision_all_3 * 1.00 / count);
                 System.out.println("Precision5-UpToHere:" + precision_all_5 * 1.00 / count);
+                System.out.println("Precision5-UpToHere:" + precision_all_10 * 1.00 / count);
                 System.out.println("MRR-UpToHere:" + mrr_all * 1.00 / count);
-                writer.append(q.getId() + "," + precisionAt3 + "," + precisionAt5 + "," + MRR);
+                writer.append(q.getId() + "," + precisionAt3 + "," + precisionAt5 + "," + precisionAt10 + "," + MRR);
             } else {
                 System.out.println("Query Hasn't any result!");
                 writerRej.append(q.getId() + "," + -1 + "," + -1 + "," + -1);
@@ -635,12 +641,6 @@ public class IndexTester {
         BaseIndex index = new BaseIndex(Constants.TBL_PERSON);
         Long df = index.getDF("description", "hossein amir");
         System.out.println(df);
-    }
-
-    public static int getQueriesCount(String semanticType) {
-        Collection<Query> queries = Query.findBySemanticType(semanticType);
-        System.out.println("Query# for semanticType=" + semanticType + " : " + queries.size());
-        return queries.size();
     }
 
     private static void testBookAll(int offset) {

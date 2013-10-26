@@ -39,6 +39,12 @@ import qcap.app.utils.CSVWriter;
  */
 public class Query {
 
+    public static int getQueriesCount(String semanticType) {
+        Collection<Query> queries = Query.findBySemanticType(semanticType);
+        System.out.println("Query# for semanticType=" + semanticType + " : " + queries.size());
+        return queries.size();
+    }
+
     Integer id;
     String entityId;
     Integer frequency;
@@ -60,7 +66,7 @@ public class Query {
         //   Query.calcQueriesStats("person");
         //System.out.println(Query.getSampleQueries("person", 2));
         String semanticType = "person";
-        int size = 400;
+        int size = AppConfig.QUERY_SAMPLE_SIZE;
         String filePath = AppConfig.QUERY_DIR + semanticType + "-" + size + "-1.txt";
         // Query.storeSampleQueriesInFile(semanticType, 400, filePath);
         System.out.println(Query.loadQueryFromFile(filePath).size());

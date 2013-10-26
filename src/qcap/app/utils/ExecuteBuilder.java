@@ -11,6 +11,7 @@ import qcap.app.IndexTester;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import qcap.app.query.Query;
 
 /**
  *
@@ -19,17 +20,27 @@ import java.util.logging.Logger;
 public class ExecuteBuilder {
 
     public static void main(String[] args) {
-        genExecFile(Constants.STYPE_TV, "tv-genre2-lm.sh", "lm-genre2-10-3-2013");
+        genExecFileByFile(Constants.STYPE_PERSON, "continent-test", "person-400-1.txt");
     }
 
-    public static void genExecFile(String semanticType, String runFileName, String logPostfix) {
+    public static void genExecFileByDB(String semanticType, String runFileName) {
+        int count = Query.getQueriesCount(semanticType);
+        genExecFile(semanticType, runFileName, count);
+    }
+
+    public static void genExecFileByFile(String semanticType, String runFileName, String queryFile) {
+        int count = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile).size();
+        genExecFile(semanticType, runFileName, count);
+    }
+
+    public static void genExecFile(String semanticType, String runFileName, int count) {
         try {
-            String filePath = AppConfig.EXEC_DIR + runFileName;
-            String logDir = "/home/aleyase2/galago-project/execute/" + semanticType + "-" + logPostfix;
+            String filePath = AppConfig.EXEC_DIR + semanticType + "-" + runFileName+".sh";
+            String logDir = "/home/aleyase2/galago-project/execute/" + semanticType + "-" + runFileName ;
             Runtime.getRuntime().exec("mkdir " + logDir);
             CSVWriter writer = new CSVWriter(filePath);
             int limit = AppConfig.LIMIT_QUERY;
-            int max = IndexTester.getQueriesCount(semanticType);
+            int max = count;
             for (int offset = 0; (offset - limit) < max; offset += limit) {
                 String cmd = "java -Xms30000m  -Xmx60000m -jar \"/home/aleyase2/galago-project/galago-app/dist/galago-app.jar\" " + offset
                         + " >> \"" + logDir + "/output-" + offset + "-" + limit + ".txt\" 2>&1";

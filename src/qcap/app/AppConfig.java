@@ -18,10 +18,10 @@ public class AppConfig {
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "";
     public static final int LIMIT_QUERY = 5;
-    public static final String BASE_DIR = "/home/aleyase2/galago-project/datasets";
-    public static final String QUERY_DIR = "/home/aleyase2/galago-project/datasets/query/";
-    public static final String TEMP_DIR = "/home/aleyase2/galago-project/datasets/temp";
-    public static final String RESULT_DIR = "/home/aleyase2/galago-project/datasets/result/files/";
-    public static final String EXEC_DIR = "/home/aleyase2/galago-project/execute/";
-  
-    }
+    public static final String BASE_DIR = "/home/aleyase2/galago-project/datasets/";
+    public static final String QUERY_DIR = BASE_DIR + "query/";
+    public static final String TEMP_DIR = BASE_DIR + "temp/";
+    public static final String RESULT_DIR = BASE_DIR + "result/";
+    public static final String EXEC_DIR = BASE_DIR + "execute/";
+    public static final int QUERY_SAMPLE_SIZE = 400;
+}
