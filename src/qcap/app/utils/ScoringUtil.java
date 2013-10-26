@@ -31,8 +31,11 @@ public class ScoringUtil {
     }
 
     public static double MRR(List<QueryResult> results, Query query) {
+        QueryResult desired = null;
         for (int i = 0; i < results.size(); i++) {
             if (results.get(i).getFbid().equals(query.getFbid())) {
+                desired = results.get(i);
+                System.out.println("Desired In MRR:"+desired.getTupleId()+" "+desired.getQueryId());
                 return 1.00 / (i + 1);
             }
         }

@@ -27,10 +27,10 @@ import java.util.logging.Logger;
  * @author aleyase2-admin
  */
 public class JoinIndex extends Index {
-    
+
     Index core;
     List<Index> sides;
-    
+
     @Override
     public List<QueryResult> retrieve(Query query, String ranking) {
         try {
@@ -64,8 +64,8 @@ public class JoinIndex extends Index {
                 for (Query subQuery : sidesQueryMap.keySet()) {
                     subQuery.setAllWeight(1.0);
                 }
-            }            
-            
+            }
+
             List<QueryResult> coreResults = core.retrieve(subQueryCore, ranking);
             System.out.println("Core Result#:" + coreResults.size());
             //List<QueryResult> coreResults = QueryResult.transformtoJQ(coreResultsQ);
@@ -113,30 +113,30 @@ public class JoinIndex extends Index {
         }
         return null;
     }
-    
+
     public Index getCore() {
         return core;
     }
-    
+
     public List<Index> getSides() {
         return sides;
     }
-    
+
     public void addSideIndex(Index sideIndex) {
         if (sides == null) {
             sides = new ArrayList<>();
         }
         sides.add(sideIndex);
     }
-    
+
     public void setCore(Index core) {
         this.core = core;
     }
-    
+
     private List<QueryResult> joinResult(List<QueryResult> coreResults, List<QueryResult> sideResults, Index sideInd) {
         try {
-            System.out.println("Executing Query#1 ...");
-            System.out.println("Executing Query#2 ...");
+            System.out.println("coreResult#:" + coreResults.size());
+            System.out.println("sideResult#:" + sideResults.size());
             Map<String, QueryResult> coreMap = new HashMap<>();
             Map<String, QueryResult> sideMap = new HashMap<>();
             for (QueryResult qr : coreResults) {
@@ -145,15 +145,14 @@ public class JoinIndex extends Index {
             for (QueryResult qr : sideResults) {
                 sideMap.put(qr.getTupleId(), qr);
             }
-            System.out.println("coreResult#:" + coreResults.size());
-            System.out.println("sideResult#:" + sideResults.size());
             String sql = "SELECT " + sideInd.getPivot().getAttrId() + ", " + sideInd.getPivot().getAttrCore() + ", " + sideInd.getPivot().getAttrSide() + " from " + sideInd.getPivot().getTableName() + " where "
-                    + sideInd.getPivot().getAttrCore() + " in (" + implode(coreResults) + ") and"
+                    + sideInd.getPivot().getAttrCore() + " in (" + implode(coreResults) + ") and "
                     + sideInd.getPivot().getAttrSide() + " in (" + implode(sideResults) + ")";
             System.out.println("Running Query... [" + sql + "]");
             ResultSet rs = DBManager.execQuery(sql);
-            System.out.println("Calculating Scores...");
+            int count = 0;
             while (rs.next()) {
+                count++;
                 String coreTupleId = rs.getString(sideInd.getPivot().getAttrCore());
                 String sideTupleId = rs.getString(sideInd.getPivot().getAttrSide());
                 coreMap.get(coreTupleId).addIndvResult(sideMap.get(sideTupleId));
@@ -161,6 +160,7 @@ public class JoinIndex extends Index {
                 //   qr.setScore(calcJoinScore(resultmap1.get(tuple1), resultmap2.get(tuple2)));
                 //finalResult.add(qr);
             }
+            System.out.println("Pivot#:" + count);
 //            System.out.println("Sorting Results...");
             //  Collections.sort(finalResult, new JoinIndex.QueryResultComparator());
 //            int rank = 0;
@@ -175,13 +175,18 @@ public class JoinIndex extends Index {
         }
         return null;
     }
-    
+
     public String implode(List<QueryResult> list) {
         StringBuilder sbuilder = new StringBuilder();
         for (QueryResult qr : list) {
             sbuilder.append(qr.getTupleId());
             sbuilder.append(" ,");
         }
-        return sbuilder.toString();
+        String str = sbuilder.toString();
+        if (str.length() > 1) {
+            return str.substring(0, str.length() - 1);
+        } else {
+            return str;
+        }
     }
 }

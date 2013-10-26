@@ -86,7 +86,7 @@ public class BaseIndex extends Index {
             ByteArrayOutputStream array = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(array);
             (new StatsFn()).run(new String[]{"stats", "--index=" + mdata.getIndexDirectory(), input}, printStream);
-            System.out.println("Stat Input: " + array.toString());
+          //  System.out.println("Stat Input: " + array.toString());
             Parameters results = Parameters.parse(array.toString());
             array.close();
             printStream.close();

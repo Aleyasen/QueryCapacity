@@ -65,7 +65,7 @@ public class UnionIndex extends Index {
         int count = 1;
         for (Index ind : children) {
             Query subQuery = Query.generateSubQueries(query, ind);
-            System.out.println("child" + count + " : " + subQuery.getText());
+            System.out.println("child" + count + " : " + subQuery.getAttributesList());
             List<QueryResult> results = ind.retrieve(subQuery, ranking);
             double cNorm = getNormCollectionScore(subQuery, ind);
             double dMin = getMinScore(results);

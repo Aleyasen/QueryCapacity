@@ -52,6 +52,17 @@ public class Constants {
     public static final String VI_TV_DRAMA = "vi_tv_drama";
     public static final String VI_TV_OTHER = "vi_tv_other";
     public static final String VI_TV_REALITY = "vi_tv_reality";
+    
+    public static final String VI_PERSON_AFRICA = "vi_person_africa";
+    public static final String VI_PERSON_ANTARCTICA = "vi_person_antarctica";
+    public static final String VI_PERSON_ASIA = "vi_person_asia";
+    public static final String VI_PERSON_AUSTRALIA = "vi_person_australia";
+    public static final String VI_PERSON_EURASIA = "vi_person_eurasia";
+    public static final String VI_PERSON_EUROPE = "vi_person_europe";
+    public static final String VI_PERSON_NORTH_AMERICA = "vi_person_north_america";
+    public static final String VI_PERSON_SOUTH_AMERICA = "vi_person_south_america";
+    
+    
     public static final String METHOD_IR_STYLE = "IR-Style";
     public static final String METHOD_PRMS = "PRMS";
     public static final String METHOD_LM = "LM";
