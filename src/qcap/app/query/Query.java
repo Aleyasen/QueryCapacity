@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import net.sf.javaml.tools.sampling.SamplingMethod;
 import net.sf.javaml.tools.sampling.SubSampling;
 import qcap.app.AppConfig;
+import qcap.app.IndexTester;
 import qcap.app.utils.CSVWriter;
 
 /**
@@ -44,7 +45,6 @@ public class Query {
         System.out.println("Query# for semanticType=" + semanticType + " : " + queries.size());
         return queries.size();
     }
-
     Integer id;
     String entityId;
     Integer frequency;
@@ -65,11 +65,16 @@ public class Query {
         //  System.out.println(findById(47245));
         //   Query.calcQueriesStats("person");
         //System.out.println(Query.getSampleQueries("person", 2));
+    //    Query.trainFieldWeights(baseQuery, null, steps);
+    }
+
+    public static void generateQueryFile() {
         String semanticType = "person";
         int size = AppConfig.QUERY_SAMPLE_SIZE;
         String filePath = AppConfig.QUERY_DIR + semanticType + "-" + size + "-1.txt";
         // Query.storeSampleQueriesInFile(semanticType, 400, filePath);
         System.out.println(Query.loadQueryFromFile(filePath).size());
+
     }
 
     public static void storeSampleQueriesInFile(String semanticType, int size, String filePath) {
@@ -269,27 +274,62 @@ public class Query {
         return subSampleQueries;
     }
 
-//    protected void getFieldWeightsByStep(int step) {
-//		this.ws.clear();
-//		if(step>=0) {
-//			int param_id = step%this.total_params;
-//			int param_iter = step/this.total_params;
-//			lambda = 0.1d+((double)param_iter)*0.1d;
-//			if(lambda>0.9d) lambda = 0.9d;
-//			if(param_id>0) {
-//				for(int i=0; i<this.params.size(); i++) {
-//					this.ws.put(this.params.get(i),1.0d*param_iter+1.0d);
-//					if(i<=param_id-1) this.ws.put(this.params.get(i),1.0d*param_iter+1.0d+1.0d);
-//				}
-//			}
-//		}
-//		else {
-//			lambda = 0.1d;
-//			for(int i=0; i<this.params.size(); i++) {
-//				this.ws.put(this.params.get(i),1.0d);
-//			}
-//		}
-//	}
+    protected Query learnQueryWeights(List<Query> trainingSet, Index index) {
+        Query dquery = trainingSet.get(0);
+        Query bestQueryWeight = dquery;
+        double bestAverageMRR = -1 * Double.MAX_VALUE;
+        int max_ite = 10;
+        int iter = 1;
+        while (true) {
+            System.out.println("Iter:" + iter);
+            if (iter == max_ite) {
+                break;
+            }
+            iter++;
+            getFieldWeightsByStep(iter, dquery);
+            for (int i = 1; i < trainingSet.size(); i++) {
+                for (int j = 0; j < trainingSet.get(i).getStatements().size(); j++) {
+                    trainingSet.get(i).getStatements().get(j).setWeight(trainingSet.get(0).getStatements().get(j).getWeight());
+                }
+            }
+            double averageMRR = IndexTester.execBatchQueries(trainingSet, index, "temp-for-training-process.txt");
+            if (averageMRR > bestAverageMRR) {
+                bestAverageMRR = averageMRR;
+                bestQueryWeight = dquery;
+            }
+            System.out.println("Current: " + dquery.getStatements());
+            System.out.println("Best: " + bestQueryWeight.getStatements());
+        }
+        return bestQueryWeight;
+    }
+    private static double lambda;
+
+    protected void getFieldWeightsByStep(int step, Query dquery) {
+        int attrCount = dquery.getStatements().size();
+
+        if (step >= 0) {
+            int param_id = step % attrCount;
+            int param_iter = step / attrCount;
+            lambda = 0.1d + ((double) param_iter) * 0.1d;
+            if (lambda > 0.9d) {
+                lambda = 0.9d;
+            }
+            if (param_id > 0) {
+                for (int i = 0; i < attrCount; i++) {
+                    dquery.getStatements().get(i).setWeight(1.0d * param_iter + 1.0d);
+                    if (i <= param_id - 1) {
+                        dquery.getStatements().get(i).setWeight(1.0d * param_iter + 1.0d + 1.0d);
+                    }
+                }
+            }
+        } else {
+            lambda = 0.1d;
+            for (int i = 0; i < attrCount; i++) {
+                dquery.getStatements().get(i).setWeight(1.0d);
+            }
+        }
+    }
+
     public static void trainFieldWeights(String semanticType, List<Query> trainSet, int steps) {
     }
 

@@ -32,7 +32,7 @@ public class IndexTester {
     static String[] tables = {/*TBL_PERSON, TBL_PROFESSION,*/Constants.TBL_CHILDREN, Constants.TBL_EDUCATION, Constants.TBL_EMPLOYMENT, Constants.TBL_ETHNICITY, Constants.TBL_GENDER, Constants.TBL_NATIONALITY, Constants.TBL_PARENT, Constants.TBL_PLACES_LIVED, Constants.TBL_PLACE_OF_BIRTH, Constants.TBL_QUOTATION, Constants.TBL_RELIGION, Constants.TBL_SIBLING, Constants.TBL_SPOUSE};
 
     public static void main(String[] args) {
-        testPerson_Continent(0, "Person-Continent-1.txt", "person-400-1.txt");
+//        testPerson_Continent(0, "Person-Continent-1.txt", "person-400-1.txt");
 //        buildTables(Constants.VI_PERSON_AFRICA, true);
 //        buildTables(Constants.VI_PERSON_ANTARCTICA, true);
 //        buildTables(Constants.VI_PERSON_ASIA, true);
@@ -41,9 +41,9 @@ public class IndexTester {
 //        buildTables(Constants.VI_PERSON_EUROPE, true);
 //        buildTables(Constants.VI_PERSON_NORTH_AMERICA, true);
 //        buildTables(Constants.VI_PERSON_SOUTH_AMERICA, true);
-        if (1 == 1) {
-            return;
-        }
+//        if (1 == 1) {
+//            return;
+//        }
         //testWebInterface();
         //testBM25F();
         // testQuerySplitConsistancy();
@@ -480,7 +480,7 @@ public class IndexTester {
         execBatchQueries(queries, index, "ABC");
     }
 
-    public static void execBatchQueries(Collection<Query> queries, Index index, String resultFilePath) {
+    public static double execBatchQueries(Collection<Query> queries, Index index, String resultFilePath) {
         printCurrentTime();
         CSVWriter writer = new CSVWriter(resultFilePath);
         CSVWriter writerRej = new CSVWriter(resultFilePath + ".reject");
@@ -508,7 +508,7 @@ public class IndexTester {
                 precision_all_5 += precisionAt5;
                 final double precisionAt10 = ScoringUtil.precisionAtK(results, q, 10);
                 precision_all_10 += precisionAt10;
-                
+
                 final double MRR = ScoringUtil.MRR(results, q);
                 mrr_all += MRR;
                 System.out.println("#" + count);
@@ -539,6 +539,7 @@ public class IndexTester {
         System.out.println("Precision-All:" + precision_all_3 * 1.00 / count);
         System.out.println("MRR-All:" + mrr_all * 1.00 / count);
         printCurrentTime();
+        return mrr_all * 1.00 / count;
     }
 
     public static void testStat() {
