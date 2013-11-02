@@ -13,24 +13,25 @@ import qcap.app.query.QueryResultComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import qcap.app.DBManager;
 
 /**
  *
  * @author aleyase2-admin
  */
 public class UnionIndex extends Index {
-
+    
     List<Index> children;
     final static double b = 0.4;
-
+    
     public List<Index> getChildren() {
         return children;
     }
-
+    
     public void setChildren(List<Index> children) {
         this.children = children;
     }
-
+    
     @Override
     public Long getDF(String fieldName, String term) {
         Long df = 0L;
@@ -39,7 +40,7 @@ public class UnionIndex extends Index {
         }
         return df;
     }
-
+    
     @Override
     public Long getWordCount(String fieldname) {
         Long wc = 0L;
@@ -48,7 +49,7 @@ public class UnionIndex extends Index {
         }
         return wc;
     }
-
+    
     @Override
     public Long getVocabCount(String fieldname) {
         Long vc = 0L;
@@ -57,7 +58,7 @@ public class UnionIndex extends Index {
         }
         return vc;
     }
-
+    
     @Override
     public List<QueryResult> retrieve(Query query, String ranking) {
         List<QueryResult> allResults = new ArrayList<>();
@@ -77,15 +78,20 @@ public class UnionIndex extends Index {
             }
             allResults.addAll(results);
             Collections.sort(allResults, new QueryResultComparator());
-            System.out.println("Union#: "+allResults.size());
-//            for(QueryResult qr : allResults){
-//                System.out.println(qr.getQueryId()+" "+qr.getScore()+" "+qr.getFbid());
-//            }
+            System.out.println("Union#: " + allResults.size());
+            int limit = 10;
+            for (QueryResult qr : allResults) {
+                if (limit == 0) {
+                    break;
+                }
+                limit--;
+                System.out.println(qr.getQueryId() + " " + qr.getScore() + " " + qr.getFbid() + " " + DBManager.getPersonName(qr.getFbid()));
+            }
             count++;
         }
         return allResults;
     }
-
+    
     public double getNormCollectionScore(Query q, Index chInd) {
         double scoreSum = 0;
         double Rmax = 0;
@@ -101,7 +107,7 @@ public class UnionIndex extends Index {
         double normScore = (score - Rmin) / (Rmax - Rmin);
         return normScore;
     }
-
+    
     private double calcI(QueryStatement qs) {
         int cf = 0;
         for (Index ind : children) {
@@ -114,7 +120,7 @@ public class UnionIndex extends Index {
         double result = (Math.log((C + 0.5) / (cf))) / (Math.log(C + 1));
         return result;
     }
-
+    
     private double calcT(QueryStatement qs, Index ind) {
         String fieldName = Constants.attribute.get(qs.getAttribute());
         Long df = ind.getDF(fieldName, qs.getValue());
@@ -127,7 +133,7 @@ public class UnionIndex extends Index {
         Double result = df / (df + 50 + 150 * (cw / avg_cw));
         return result;
     }
-
+    
     private double getMinScore(List<QueryResult> results) {
         double min = Double.MAX_VALUE;
         for (QueryResult qr : results) {
@@ -137,7 +143,7 @@ public class UnionIndex extends Index {
         }
         return min;
     }
-
+    
     private double getMaxScore(List<QueryResult> results) {
         double max = -1 * Double.MAX_VALUE;
         for (QueryResult qr : results) {

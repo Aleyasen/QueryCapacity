@@ -169,7 +169,7 @@ public class JoinIndex extends Index {
 //                rank++;
 //            }
 //            System.out.println("Done");
-            return coreResults;
+            return new ArrayList<>(coreMap.values());
         } catch (SQLException ex) {
             Logger.getLogger(JoinIndex.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -48,4 +48,18 @@ public class DBManager {
         }
         return null;
     }
+
+    public static String getPersonName(String fbid) {
+        try {
+            String query = "SELECT * FROM freebase.tbl_person where fbid=\"" + fbid + "\"";
+            ResultSet rs = execQuery(query);
+            while (rs.next()) {
+                String name = rs.getString("name");
+                return name;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

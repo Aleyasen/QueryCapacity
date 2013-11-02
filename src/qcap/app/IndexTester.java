@@ -32,7 +32,7 @@ public class IndexTester {
     static String[] tables = {/*TBL_PERSON, TBL_PROFESSION,*/Constants.TBL_CHILDREN, Constants.TBL_EDUCATION, Constants.TBL_EMPLOYMENT, Constants.TBL_ETHNICITY, Constants.TBL_GENDER, Constants.TBL_NATIONALITY, Constants.TBL_PARENT, Constants.TBL_PLACES_LIVED, Constants.TBL_PLACE_OF_BIRTH, Constants.TBL_QUOTATION, Constants.TBL_RELIGION, Constants.TBL_SIBLING, Constants.TBL_SPOUSE};
 
     public static void main(String[] args) {
-//        testPerson_Continent(0, "Person-Continent-1.txt", "person-400-1.txt");
+        testPerson_Continent(30, "Person-Continent-1-temp.txt", "person-400-1.txt");
 //        buildTables(Constants.VI_PERSON_AFRICA, true);
 //        buildTables(Constants.VI_PERSON_ANTARCTICA, true);
 //        buildTables(Constants.VI_PERSON_ASIA, true);
@@ -41,9 +41,9 @@ public class IndexTester {
 //        buildTables(Constants.VI_PERSON_EUROPE, true);
 //        buildTables(Constants.VI_PERSON_NORTH_AMERICA, true);
 //        buildTables(Constants.VI_PERSON_SOUTH_AMERICA, true);
-//        if (1 == 1) {
-//            return;
-//        }
+        if (1 == 1) {
+            return;
+        }
         //testWebInterface();
         //testBM25F();
         // testQuerySplitConsistancy();
@@ -301,8 +301,8 @@ public class IndexTester {
     public static void testPerson_Continent(int offset, String resultFileName, String queryFile) {
 
         //Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_PERSON, offset, AppConfig.LIMIT_QUERY);
-        //Collection<Query> queries = Query.findById(49100);
-        Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
+        Collection<Query> queries = Query.findById(48492);
+        //Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
         System.out.println(queries.size() + " query fetched for execute");
         JoinIndex index = new JoinIndex();
 
