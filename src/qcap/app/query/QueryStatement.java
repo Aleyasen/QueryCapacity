@@ -16,6 +16,10 @@ public class QueryStatement {
     String value;
     Double weight;
 
+    public QueryStatement() {
+        weight = 1.0d;
+    }
+
     public Double getWeight() {
         return weight;
     }
@@ -50,7 +54,6 @@ public class QueryStatement {
 
     @Override
     public String toString() {
-        return "[" + attribute + " = " + value + "] ";
+        return "QueryStatement{" + "id=" + id + ", attribute=" + attribute + ", value=" + value + ", weight=" + weight + '}';
     }
-
 }

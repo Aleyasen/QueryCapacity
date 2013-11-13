@@ -40,11 +40,30 @@ import qcap.app.utils.CSVWriter;
  * @author aleyase2-admin
  */
 public class Query {
-    
+
     public static int getQueriesCount(String semanticType) {
         Collection<Query> queries = Query.findBySemanticType(semanticType);
         System.out.println("Query# for semanticType=" + semanticType + " : " + queries.size());
         return queries.size();
+    }
+
+    public static Collection<Query> dropStatement(Collection<Query> queries, String attribute) {
+        Collection<Query> result = new ArrayList<Query>();
+        for (Query q : queries) {
+            Query dq = dropStatement(q, attribute);
+            result.add(dq);
+        }
+        return result;
+    }
+
+    private static Query dropStatement(Query q, String attribute) {
+        for (QueryStatement qs : q.getStatements()) {
+            if (qs.attribute.equals(attribute)) {
+                q.getStatements().remove(qs);
+                break;
+            }
+        }
+        return q;
     }
     Integer id;
     String entityId;
@@ -54,42 +73,50 @@ public class Query {
     String semanticType;
     List<QueryStatement> statements;
     String fbid;
-    
+
     public Query() {
         statements = new ArrayList<>();
     }
     private static String baseQuery = "SELECT q.id qid, entity_id, frequency, q.text qtext, attributes_count, semantic_type, fbid, s.id sid, attribute, value "
             + "FROM tbl_query q, tbl_statement s "
             + "WHERE s.query = q.id ";
-    
+
     public static void main(String[] args) {
         //  System.out.println(findById(47245));
         //   Query.calcQueriesStats("person");
         //storeSampleQueriesInFile(Constants.STYPE_TV, 400, AppConfig.QUERY_DIR + "TV-400-1.txt");
         //System.out.println(Query.getSampleQueries(Constants.STYPE_TV, 400));
         //    Query.trainFieldWeights(baseQuery, null, steps);
-        List<Query> queries = loadQueryFromFile(AppConfig.QUERY_DIR + "TV-400-1.txt");
-        calcQueriesStats(queries);
+        List<Query> queries = Query.findBySemanticType("person");
+        System.out.println(queries.get(0));
+        dropStatement(queries.get(0), "person_name");
+        System.out.println(queries.get(0));
+        //loadQueryFromFile(AppConfig.QUERY_DIR + "TV-400-1.txt");
+        //calcQueriesStats(queries);
         if (1 == 1) {
             return;
         }
-        Index index = new BaseIndex(Constants.TBL_PERSON);
-        index.setAcceptList(Arrays.asList("person_name", "person_description"));
-        QuerySet qset = QuerySet.getQuerySet("person", Arrays.asList("person_name", "person_description"));
-        System.out.println("Query: " + qset.queries.size());
-        trainQueriesWeights(qset.queries, index, 20);
-        
+//        Index index = new BaseIndex(Constants.TBL_PERSON);
+//        index.setAcceptList(Arrays.asList("person_name", "person_description"));
+//        List<Query> queries = loadQueryFromFile(AppConfig.QUERY_DIR + "person-400-1.txt");
+//        for (Query query : queries) {
+//            System.out.println(query.getStatements());
+//        }
+//        QuerySet qset = QuerySet.getQuerySet(queries, Arrays.asList("person_name", "person_description"));
+//        System.out.println("Query: " + qset.queries.size());
+//        trainQueriesWeights(qset.queries, index, 20);
+
     }
-    
+
     public static void generateQueryFile() {
         String semanticType = "person";
         int size = AppConfig.QUERY_SAMPLE_SIZE;
         String filePath = AppConfig.QUERY_DIR + semanticType + "-" + size + "-1.txt";
         // Query.storeSampleQueriesInFile(semanticType, 400, filePath);
         System.out.println(Query.loadQueryFromFile(filePath).size());
-        
+
     }
-    
+
     public static void storeSampleQueriesInFile(String semanticType, int size, String filePath) {
         List<Query> queries = Query.getSampleQueries(semanticType, size);
         CSVWriter writer = new CSVWriter(filePath);
@@ -99,21 +126,21 @@ public class Query {
         System.out.println("Query# " + queries.size() + " saved in " + filePath);
         writer.close();
     }
-    
+
     public static List<Query> loadQueryFromFile(String filePath, int offset, int limit) {
         List<Query> queries = Query.loadQueryFromFile(filePath);
         List<Query> sub_queries = new ArrayList<>();
-        
+
         int upper_bound = Math.min(limit + offset, queries.size());
         for (int i = offset; i < upper_bound; i++) {
             sub_queries.add(queries.get(i));
         }
         System.out.println("[loadQueryFromFile] Selected Queries for Execution:");
         System.out.println(sub_queries);
-        
+
         return sub_queries;
     }
-    
+
     public static List<Query> loadQueryFromFile(String filePath) {
         try {
             List<Query> allQueries = Query.findAll();
@@ -121,7 +148,7 @@ public class Query {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
-            
+
             while (line != null) {
                 sb.append(line);
                 sb.append('\n');
@@ -141,7 +168,7 @@ public class Query {
         }
         return null;
     }
-    
+
     public Double calcPRMS(Index ind) {
         Double sum = 0.0;
         for (QueryStatement st : statements) {
@@ -152,19 +179,19 @@ public class Query {
         }
         return sum;
     }
-    
+
     public void setAllWeight(Double weight) {
         for (QueryStatement st : statements) {
             st.weight = weight;
         }
     }
-    
+
     public void updateWeight(Double sum) {
         for (QueryStatement st : statements) {
             st.weight = st.weight / sum;
         }
     }
-    
+
     public Double getTotalWeight() {
         Double total = 0.0;
         for (QueryStatement st : statements) {
@@ -172,14 +199,14 @@ public class Query {
         }
         return total;
     }
-    
+
     public void addQueryStatement(QueryStatement statement) {
         if (statements == null) {
             statements = new ArrayList<>();
         }
         statements.add(statement);
     }
-    
+
     public List<String> getAttributesList() {
         List<String> list = new ArrayList<>();
         for (QueryStatement st : statements) {
@@ -187,34 +214,42 @@ public class Query {
         }
         return list;
     }
-    
+
     public static List<Query> findById(Integer id) {
         String query = baseQuery + " and q.id=" + id;
         return find(query);
     }
-    
+
+    public static List<Query> findById(List<Integer> ids) {
+        List<Query> result = new ArrayList<>();
+        for (Integer id : ids) {
+            result.addAll(findById(id));
+        }
+        return result;
+    }
+
     public static List<Query> findBySemanticType(String semanticType) {
         String query = baseQuery + " and q.semantic_type='" + semanticType + "'";
         System.out.println(query);
         return find(query);
     }
-    
+
     public static List<Query> findBySemanticType(String semanticType, int offset, int limit) {
         List<Query> queries = Query.findBySemanticType(semanticType);
         List<Query> sub_queries = new ArrayList<>();
-        
+
         int upper_bound = Math.min(limit + offset, queries.size());
         for (int i = offset; i < upper_bound; i++) {
             sub_queries.add(queries.get(i));
         }
         return sub_queries;
     }
-    
+
     public static List<Query> findAll() {
         String query = baseQuery;
         return find(query);
     }
-    
+
     private static List<Query> find(String query) {
         try {
             Map<Integer, Query> map = new HashMap<>();
@@ -248,7 +283,7 @@ public class Query {
         }
         return null;
     }
-    
+
     public static Query generateSubQueries(Query query, Index index) {
         Query newq = new Query();
         int attCount = 0;
@@ -269,7 +304,7 @@ public class Query {
         newq.setSemanticType(query.getSemanticType());
         return newq;
     }
-    
+
     public static List<Query> getSampleQueries(String semanticType, int size) {
         List<Query> queries = Query.findBySemanticType(semanticType);
         List<Query> subSampleQueries = new ArrayList<>();
@@ -286,7 +321,7 @@ public class Query {
         }
         return subSampleQueries;
     }
-    
+
     public static Query trainQueriesWeights(List<Query> trainingSet, Index index, int iteration) {
         Query dquery = trainingSet.get(0);
         Query bestQueryWeight = dquery;
@@ -318,10 +353,10 @@ public class Query {
         return bestQueryWeight;
     }
     private static double lambda;
-    
+
     public static void getFieldWeightsByStep(int step, Query dquery) {
         int attrCount = dquery.getStatements().size();
-        
+
         if (step >= 0) {
             int param_id = step % attrCount;
             int param_iter = step / attrCount;
@@ -344,11 +379,11 @@ public class Query {
             }
         }
     }
-    
+
     public static Map<Set<String>, Integer> calcQueriesStats(List<Query> queries) {
         Map<Set<String>, Integer> stats = new HashMap<Set<String>, Integer>();
         Map<Set<String>, List<Integer>> querySets = new HashMap<Set<String>, List<Integer>>();
-        
+
         for (Query query : queries) {
             Set<String> attrs = new TreeSet<String>(query.getAttributesList());
             if (!stats.containsKey(attrs)) {
@@ -365,82 +400,82 @@ public class Query {
         }
         return stats;
     }
-    
+
     public String getFbid() {
         return fbid;
     }
-    
+
     public void setFbid(String fbid) {
         this.fbid = fbid;
     }
-    
+
     public Integer getId() {
         return id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     public String getEntityId() {
         return entityId;
     }
-    
+
     public void setEntityId(String entityId) {
         this.entityId = entityId;
     }
-    
+
     public Integer getFrequency() {
         return frequency;
     }
-    
+
     public void setFrequency(Integer frequency) {
         this.frequency = frequency;
     }
-    
+
     public String getText() {
         return text;
     }
-    
+
     public void setText(String text) {
         this.text = text;
     }
-    
+
     public Integer getAttributesCount() {
         return attributesCount;
     }
-    
+
     public void setAttributesCount(Integer attributesCount) {
         this.attributesCount = attributesCount;
     }
-    
+
     public String getSemanticType() {
         return semanticType;
     }
-    
+
     public void setSemanticType(String semanticType) {
         this.semanticType = semanticType;
     }
-    
+
     public List<QueryStatement> getStatements() {
         return statements;
     }
-    
+
     public void setStatements(List<QueryStatement> statements) {
         this.statements = statements;
     }
-    
+
     public void addStatement(QueryStatement statement) {
         statements.add(statement);
     }
-    
+
     public void addStatement(String attribute, String value) {
         QueryStatement qs = new QueryStatement();
         qs.setAttribute(attribute);
         qs.setValue(value);
         addStatement(qs);
     }
-    
+
     @Override
     public String toString() {
         return "Query{" + statements + " ,id=" + id + ", entityId=" + entityId + ", frequency=" + frequency + ", text=" + text + ", attributesCount=" + attributesCount + ", semanticType=" + semanticType + ", fbid=" + fbid + "}\n";

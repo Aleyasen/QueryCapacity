@@ -42,9 +42,8 @@ public class QuerySet {
         return stats;
     }
 
-    public static QuerySet getQuerySet(String semanticType, List<String> attributes) {
+    public static QuerySet getQuerySet(List<Query> queries, List<String> attributes) {
         QuerySet qset = new QuerySet();
-        List<Query> queries = Query.findBySemanticType(semanticType);
         for (Query query : queries) {
             if (query.getStatements().size() == attributes.size()) {
                 boolean accept = true;

@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.javaml.utils.ArrayUtils;
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.stat.inference.TestUtils;
 
 /**
  *
@@ -23,15 +26,15 @@ public class EvalResults {
 
     public static void main(String[] args) {
         // String filePath = AppConfig.RESULT_DIR + "Person-LM-10-2-2013.txt";
-        //String filePath = AppConfig.RESULT_DIR + "TV-LM-10-3-2013-2.txt";
+        String filePath = AppConfig.RESULT_DIR + "person_art_sport_other.txt";
         //String filePath = AppConfig.RESULT_DIR + "Person-LM-CORI-US-10-3-2013.txt";
-        String filePath = AppConfig.RESULT_DIR + "Book-LM-10-3-2013.txt";
-        String difficultFilePath = AppConfig.RESULT_DIR + "Book-LM-10-3-2013-difficult.txt";
+//        String filePath = AppConfig.RESULT_DIR + "Book-LM-10-3-2013.txt";
+//        String difficultFilePath = AppConfig.RESULT_DIR + "Book-LM-10-3-2013-difficult.txt";
 
         //String difficultFilePath = AppConfig.RESULT_DIR + "Person-LM-10-2-2013-difficult.txt";
         //String difficultFilePath = AppConfig.RESULT_DIR + "TV-LM-10-3-2013-2-difficult.txt";
 
-        evalResultFile(difficultFilePath);
+        evalResultFile(filePath);
         //extractDifficultQueries(filePath, difficultFilePath, 0.3);
     }
 
@@ -72,6 +75,28 @@ public class EvalResults {
         }
     }
 
+    public static void evalTTest(List<Double> list1, List<Double> list2){
+        try {
+            double[] arr1 = new double[list1.size()];
+            int i = 0;
+            for(Double element: list1){
+                arr1[i]=element;
+                i++;
+            }
+            double[] arr2 = new double[list2.size()];
+            i = 0;
+            for(Double element: list2){
+                arr1[i]=element;
+                i++;
+            }
+            
+            TestUtils.tTest(arr1,arr2);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(EvalResults.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MathException ex) {
+            Logger.getLogger(EvalResults.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public static void evalResultFile(String filePath) {
         BufferedReader br = null;
         Double precision_5_sum = 0.0;

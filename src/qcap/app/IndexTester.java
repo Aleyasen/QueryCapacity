@@ -32,7 +32,10 @@ public class IndexTester {
     static String[] tables = {/*TBL_PERSON, TBL_PROFESSION,*/Constants.TBL_CHILDREN, Constants.TBL_EDUCATION, Constants.TBL_EMPLOYMENT, Constants.TBL_ETHNICITY, Constants.TBL_GENDER, Constants.TBL_NATIONALITY, Constants.TBL_PARENT, Constants.TBL_PLACES_LIVED, Constants.TBL_PLACE_OF_BIRTH, Constants.TBL_QUOTATION, Constants.TBL_RELIGION, Constants.TBL_SIBLING, Constants.TBL_SPOUSE};
 
     public static void main(String[] args) {
-        testPerson_Continent(30, "Person-Continent-1-temp.txt", "person-400-1.txt");
+        //       testUnionProblem();
+        testPerson_Actor(0, "Person-Actor-test-2.txt", "person-400-1.txt");
+//        testPerson_All_400subsample(0, "Person-all-test-2.txt", "person-400-1.txt");
+           
 //        buildTables(Constants.VI_PERSON_AFRICA, true);
 //        buildTables(Constants.VI_PERSON_ANTARCTICA, true);
 //        buildTables(Constants.VI_PERSON_ASIA, true);
@@ -41,6 +44,12 @@ public class IndexTester {
 //        buildTables(Constants.VI_PERSON_EUROPE, true);
 //        buildTables(Constants.VI_PERSON_NORTH_AMERICA, true);
 //        buildTables(Constants.VI_PERSON_SOUTH_AMERICA, true);
+//        buildTables(Constants.VI_PERSON_ACTOR, true);
+//        buildTables(Constants.VI_PERSON_NOT_ACTOR, true);
+        //    buildTables(Constants.VI_PERSON_CELEBRITY, true);
+//        buildTables(Constants.VI_PERSON_NOT_CELEBRITY, true);
+        //     buildTables(Constants.VI_PERSON_EDUCATED, true);
+//        buildTables(Constants.VI_PERSON_NOT_EDUCATED, true);
         if (1 == 1) {
             return;
         }
@@ -88,10 +97,15 @@ public class IndexTester {
             System.out.println("offset:" + args[0]);
             int offset = Integer.parseInt(args[0]);
             //testPersonAll_US_NONUS(offset);
-            testPerson_Continent(offset, "Person-Continent-1.txt", "person-400-1.txt");
+            //testPerson_Continent(offset, "Person-Continent-1.txt", "person-400-1.txt");
+            //testPerson_Celebrity(offset, "Person-celebrity-1.txt", "person-400-1.txt");
+            //testPerson_Actor(offset, "Person-actor-1.txt", "person-400-1.txt");
+            testPerson_Actor(offset, "Person-actor-2-reverse.txt", "person-400-1.txt");
+
+            //testPerson_All_400subsample(offset, "Person-all-sample400-1.txt", "person-400-1.txt");
             //testTVAll(offset);
         } else {
-            Query.getQueriesCount(Constants.STYPE_TV);
+            Query.getQueriesCount(Constants.STYPE_PERSON);
         }
 
         //testDF();
@@ -370,6 +384,239 @@ public class IndexTester {
         execBatchQueries(queries, index, AppConfig.RESULT_DIR + resultFileName);
     }
 
+    public static void testPerson_Celebrity(int offset, String resultFileName, String queryFile) {
+
+        //Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_PERSON, offset, AppConfig.LIMIT_QUERY);
+        //Collection<Query> queries = Query.findById(48492);
+        Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
+        System.out.println(queries.size() + " query fetched for execute");
+        JoinIndex index = new JoinIndex();
+
+        //Add Core Index
+        Index celebrityIndex = new BaseIndex(Constants.VI_PERSON_CELEBRITY);
+        celebrityIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+        Index notCelebrityIndex = new BaseIndex(Constants.VI_PERSON_NOT_CELEBRITY);
+        notCelebrityIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+
+        UnionIndex personIndex = new UnionIndex();
+        personIndex.setChildren(Arrays.asList(celebrityIndex, notCelebrityIndex));
+        personIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+        index.setCore(personIndex);
+
+        //Add Side Index - Profession
+        BaseIndex profIndex = new BaseIndex(Constants.TBL_PROFESSION);
+        profIndex.setAcceptList(Arrays.asList("profession"));
+        profIndex.setPivot(PivotTable.PERSON_PROFESSION_PIVOT);
+        index.addSideIndex(profIndex);
+
+        //Add Side Index - Nationality
+        BaseIndex nationalityIndex = new BaseIndex(Constants.TBL_NATIONALITY);
+        nationalityIndex.setAcceptList(Arrays.asList("nationality"));
+        nationalityIndex.setPivot(PivotTable.PERSON_NATIONALITY_PIVOT);
+        index.addSideIndex(nationalityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex genderIndex = new BaseIndex(Constants.TBL_GENDER);
+        genderIndex.setAcceptList(Arrays.asList("gender"));
+        genderIndex.setPivot(PivotTable.PERSON_GENDER_PIVOT);
+        index.addSideIndex(genderIndex);
+
+        //Add Side Index - Place of Birth
+        BaseIndex placeOfBirthIndex = new BaseIndex(Constants.TBL_PLACE_OF_BIRTH);
+        placeOfBirthIndex.setAcceptList(Arrays.asList("place_of_birth"));
+        placeOfBirthIndex.setPivot(PivotTable.PERSON_PLACE_OF_BIRTH_PIVOT);
+        index.addSideIndex(placeOfBirthIndex);
+
+        //Add Side Index - Ethnicity
+        BaseIndex ethnicityIndex = new BaseIndex(Constants.TBL_ETHNICITY);
+        ethnicityIndex.setAcceptList(Arrays.asList("ethnicity"));
+        ethnicityIndex.setPivot(PivotTable.PERSON_ETHNICITY_PIVOT);
+        index.addSideIndex(ethnicityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex religionIndex = new BaseIndex(Constants.TBL_RELIGION);
+        religionIndex.setAcceptList(Arrays.asList("religion"));
+        religionIndex.setPivot(PivotTable.PERSON_RELIGION_PIVOT);
+        index.addSideIndex(religionIndex);
+
+        execBatchQueries(queries, index, AppConfig.RESULT_DIR + resultFileName);
+    }
+
+    public static void testPerson_Actor(int offset, String resultFileName, String queryFile) {
+
+        //Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_PERSON, offset, AppConfig.LIMIT_QUERY);
+        Collection<Query> queries = Query.findById(46162);
+        //Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
+        System.out.println(queries.size() + " query fetched for execute");
+        JoinIndex index = new JoinIndex();
+
+        //Add Core Index
+        Index actorIndex = new BaseIndex(Constants.VI_PERSON_ACTOR);
+        actorIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+        Index notActorIndex = new BaseIndex(Constants.VI_PERSON_NOT_ACTOR);
+        notActorIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+
+        UnionIndex personIndex = new UnionIndex();
+        personIndex.setChildren(Arrays.asList(notActorIndex, actorIndex));
+        personIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+        index.setCore(personIndex);
+
+        //Add Side Index - Profession
+        BaseIndex profIndex = new BaseIndex(Constants.TBL_PROFESSION);
+        profIndex.setAcceptList(Arrays.asList("profession"));
+        profIndex.setPivot(PivotTable.PERSON_PROFESSION_PIVOT);
+        index.addSideIndex(profIndex);
+
+        //Add Side Index - Nationality
+        BaseIndex nationalityIndex = new BaseIndex(Constants.TBL_NATIONALITY);
+        nationalityIndex.setAcceptList(Arrays.asList("nationality"));
+        nationalityIndex.setPivot(PivotTable.PERSON_NATIONALITY_PIVOT);
+        index.addSideIndex(nationalityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex genderIndex = new BaseIndex(Constants.TBL_GENDER);
+        genderIndex.setAcceptList(Arrays.asList("gender"));
+        genderIndex.setPivot(PivotTable.PERSON_GENDER_PIVOT);
+        index.addSideIndex(genderIndex);
+
+        //Add Side Index - Place of Birth
+        BaseIndex placeOfBirthIndex = new BaseIndex(Constants.TBL_PLACE_OF_BIRTH);
+        placeOfBirthIndex.setAcceptList(Arrays.asList("place_of_birth"));
+        placeOfBirthIndex.setPivot(PivotTable.PERSON_PLACE_OF_BIRTH_PIVOT);
+        index.addSideIndex(placeOfBirthIndex);
+
+        //Add Side Index - Ethnicity
+        BaseIndex ethnicityIndex = new BaseIndex(Constants.TBL_ETHNICITY);
+        ethnicityIndex.setAcceptList(Arrays.asList("ethnicity"));
+        ethnicityIndex.setPivot(PivotTable.PERSON_ETHNICITY_PIVOT);
+        index.addSideIndex(ethnicityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex religionIndex = new BaseIndex(Constants.TBL_RELIGION);
+        religionIndex.setAcceptList(Arrays.asList("religion"));
+        religionIndex.setPivot(PivotTable.PERSON_RELIGION_PIVOT);
+        index.addSideIndex(religionIndex);
+
+        execBatchQueries(queries, index, AppConfig.RESULT_DIR + resultFileName);
+    }
+
+    public static void testPerson_education(int offset, String resultFileName, String queryFile) {
+
+        //Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_PERSON, offset, AppConfig.LIMIT_QUERY);
+        //Collection<Query> queries = Query.findById(48492);
+        Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
+        System.out.println(queries.size() + " query fetched for execute");
+        JoinIndex index = new JoinIndex();
+
+        //Add Core Index
+        Index eduIndex = new BaseIndex(Constants.VI_PERSON_EDUCATED);
+        eduIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+        Index notEduIndex = new BaseIndex(Constants.VI_PERSON_NOT_EDUCATED);
+        notEduIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+
+        UnionIndex personIndex = new UnionIndex();
+        personIndex.setChildren(Arrays.asList(eduIndex, notEduIndex));
+        personIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+        index.setCore(personIndex);
+
+        //Add Side Index - Profession
+        BaseIndex profIndex = new BaseIndex(Constants.TBL_PROFESSION);
+        profIndex.setAcceptList(Arrays.asList("profession"));
+        profIndex.setPivot(PivotTable.PERSON_PROFESSION_PIVOT);
+        index.addSideIndex(profIndex);
+
+        //Add Side Index - Nationality
+        BaseIndex nationalityIndex = new BaseIndex(Constants.TBL_NATIONALITY);
+        nationalityIndex.setAcceptList(Arrays.asList("nationality"));
+        nationalityIndex.setPivot(PivotTable.PERSON_NATIONALITY_PIVOT);
+        index.addSideIndex(nationalityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex genderIndex = new BaseIndex(Constants.TBL_GENDER);
+        genderIndex.setAcceptList(Arrays.asList("gender"));
+        genderIndex.setPivot(PivotTable.PERSON_GENDER_PIVOT);
+        index.addSideIndex(genderIndex);
+
+        //Add Side Index - Place of Birth
+        BaseIndex placeOfBirthIndex = new BaseIndex(Constants.TBL_PLACE_OF_BIRTH);
+        placeOfBirthIndex.setAcceptList(Arrays.asList("place_of_birth"));
+        placeOfBirthIndex.setPivot(PivotTable.PERSON_PLACE_OF_BIRTH_PIVOT);
+        index.addSideIndex(placeOfBirthIndex);
+
+        //Add Side Index - Ethnicity
+        BaseIndex ethnicityIndex = new BaseIndex(Constants.TBL_ETHNICITY);
+        ethnicityIndex.setAcceptList(Arrays.asList("ethnicity"));
+        ethnicityIndex.setPivot(PivotTable.PERSON_ETHNICITY_PIVOT);
+        index.addSideIndex(ethnicityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex religionIndex = new BaseIndex(Constants.TBL_RELIGION);
+        religionIndex.setAcceptList(Arrays.asList("religion"));
+        religionIndex.setPivot(PivotTable.PERSON_RELIGION_PIVOT);
+        index.addSideIndex(religionIndex);
+
+        execBatchQueries(queries, index, AppConfig.RESULT_DIR + resultFileName);
+    }
+
+    public static void testPerson_All_400subsample(int offset, String resultFileName, String queryFile) {
+
+        //Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_PERSON, offset, AppConfig.LIMIT_QUERY);
+        Collection<Query> queries = Query.findById(46162);
+//        Collection<Query> queries = Query.loadQueryFromFile(AppConfig.QUERY_DIR + queryFile, offset, AppConfig.LIMIT_QUERY);
+        System.out.println(queries.size() + " query fetched for execute");
+        JoinIndex index = new JoinIndex();
+
+        //Add Core Index
+        Index personIndex = new BaseIndex(Constants.TBL_PERSON);
+        personIndex.setAcceptList(Arrays.asList("person_name", "person_description"));
+
+        index.setCore(personIndex);
+
+        //Add Side Index - Profession
+        BaseIndex profIndex = new BaseIndex(Constants.TBL_PROFESSION);
+        profIndex.setAcceptList(Arrays.asList("profession"));
+        profIndex.setPivot(PivotTable.PERSON_PROFESSION_PIVOT);
+        index.addSideIndex(profIndex);
+
+        //Add Side Index - Nationality
+        BaseIndex nationalityIndex = new BaseIndex(Constants.TBL_NATIONALITY);
+        nationalityIndex.setAcceptList(Arrays.asList("nationality"));
+        nationalityIndex.setPivot(PivotTable.PERSON_NATIONALITY_PIVOT);
+        index.addSideIndex(nationalityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex genderIndex = new BaseIndex(Constants.TBL_GENDER);
+        genderIndex.setAcceptList(Arrays.asList("gender"));
+        genderIndex.setPivot(PivotTable.PERSON_GENDER_PIVOT);
+        index.addSideIndex(genderIndex);
+
+        //Add Side Index - Place of Birth
+        BaseIndex placeOfBirthIndex = new BaseIndex(Constants.TBL_PLACE_OF_BIRTH);
+        placeOfBirthIndex.setAcceptList(Arrays.asList("place_of_birth"));
+        placeOfBirthIndex.setPivot(PivotTable.PERSON_PLACE_OF_BIRTH_PIVOT);
+        index.addSideIndex(placeOfBirthIndex);
+
+        //Add Side Index - Ethnicity
+        BaseIndex ethnicityIndex = new BaseIndex(Constants.TBL_ETHNICITY);
+        ethnicityIndex.setAcceptList(Arrays.asList("ethnicity"));
+        ethnicityIndex.setPivot(PivotTable.PERSON_ETHNICITY_PIVOT);
+        index.addSideIndex(ethnicityIndex);
+
+        //Add Side Index - Gender
+        BaseIndex religionIndex = new BaseIndex(Constants.TBL_RELIGION);
+        religionIndex.setAcceptList(Arrays.asList("religion"));
+        religionIndex.setPivot(PivotTable.PERSON_RELIGION_PIVOT);
+        index.addSideIndex(religionIndex);
+
+        execBatchQueries(queries, index, AppConfig.RESULT_DIR + resultFileName);
+    }
+
     public static void testTVAll(int offset) {
         Collection<Query> queries = Query.findBySemanticType(Constants.STYPE_TV, offset, AppConfig.LIMIT_QUERY);
         System.out.println(queries.size() + " query fetched for execute");
@@ -502,6 +749,17 @@ public class IndexTester {
             if (results != null) {
                 count++;
                 System.out.println("Desired: " + q.getEntityId() + " " + q.getFbid() + " " + q.getId());
+                Integer sourceCollection = null;
+                for (QueryResult qr : results) {
+                    if (qr.getFbid().equals(q.getFbid())) {
+                        sourceCollection = qr.getSourceCollection();
+                        break;
+                    }
+                }
+                String sourceCollectionStr = "N/A";
+                if (sourceCollection != null) {
+                    sourceCollectionStr = sourceCollection + "";
+                }
                 final double precisionAt3 = ScoringUtil.precisionAtK(results, q, 3);
                 precision_all_3 += precisionAt3;
                 final double precisionAt5 = ScoringUtil.precisionAtK(results, q, 5);
@@ -523,7 +781,8 @@ public class IndexTester {
                 System.out.println("Precision5-UpToHere:" + precision_all_5 * 1.00 / count);
                 System.out.println("Precision5-UpToHere:" + precision_all_10 * 1.00 / count);
                 System.out.println("MRR-UpToHere:" + mrr_all * 1.00 / count);
-                writer.append(q.getId() + "," + precisionAt3 + "," + precisionAt5 + "," + precisionAt10 + "," + MRR);
+                System.out.println("SourceCollection:" + sourceCollectionStr);
+                writer.append(q.getId() + "," + precisionAt3 + "," + precisionAt5 + "," + precisionAt10 + "," + MRR + "," + sourceCollectionStr);
             } else {
                 System.out.println("Query Hasn't any result!");
                 writerRej.append(q.getId() + "," + -1 + "," + -1 + "," + -1);
@@ -561,25 +820,6 @@ public class IndexTester {
         } else {
             index = getIndexMetadataName(table);
         }
-        for (Field f : index.getFields()) {
-            f.setVocabCount(index.calcVocabCount(f.getName()));
-            f.setWordCount(index.calcWordCount(f.getName()));
-        }
-        index.save();
-    }
-
-    public static void buildTables(String table, boolean desc) {
-
-        Connection conn = new DBManager().getConnection();
-        BaseIndex index;
-        if (desc) {
-            index = getIndexMetadataNameDesc(table);
-        } else {
-            index = getIndexMetadataName(table);
-        }
-        index.save();
-        index.generateTrecFile(conn);
-        index.build();
         for (Field f : index.getFields()) {
             f.setVocabCount(index.calcVocabCount(f.getName()));
             f.setWordCount(index.calcWordCount(f.getName()));

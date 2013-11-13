@@ -53,6 +53,22 @@ public class Constants {
     public static final String VI_TV_OTHER = "vi_tv_other";
     public static final String VI_TV_REALITY = "vi_tv_reality";
     
+    public static final String VI_PERSON_CELEBRITY = "vi_person_celebrity";
+    public static final String VI_PERSON_NOT_CELEBRITY = "vi_person_not_celebrity";
+    
+    public static final String VI_PERSON_ACTOR = "vi_person_actor";
+    public static final String VI_PERSON_NOT_ACTOR = "vi_person_not_actor";
+   
+    
+    public static final String VI_PERSON_ART = "vi_person_art";
+    public static final String VI_PERSON_SPORT = "vi_person_sport";
+    public static final String VI_PERSON_PROFESSION_OTHER = "vi_person_profession_other";
+   
+   
+    
+    public static final String VI_PERSON_EDUCATED = "vi_person_educated";
+    public static final String VI_PERSON_NOT_EDUCATED = "vi_person_not_educated";
+    
     public static final String VI_PERSON_AFRICA = "vi_person_africa";
     public static final String VI_PERSON_ANTARCTICA = "vi_person_antarctica";
     public static final String VI_PERSON_ASIA = "vi_person_asia";

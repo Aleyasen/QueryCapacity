@@ -27,11 +27,21 @@ public class QueryResult {
     private Double score;
     private Double weight;
     private Integer rank;
+    private Integer sourceCollection; 
 
     public QueryResult() {
         indvResults = new ArrayList<>();
     }
 
+    public Integer getSourceCollection() {
+        return sourceCollection;
+    }
+
+    public void setSourceCollection(Integer sourceCollection) {
+        this.sourceCollection = sourceCollection;
+    }
+
+    
     public Double getWeight() {
         return weight;
     }

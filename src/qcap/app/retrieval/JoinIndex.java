@@ -109,6 +109,7 @@ public class JoinIndex extends Index {
             Collections.sort(coreResults, new QueryResultComparator());
             return coreResults;
         } catch (Exception ex) {
+            System.out.println("Exception ON >>>>>>>>>>>> " + query);
             ex.printStackTrace();
         }
         return null;
@@ -134,6 +135,7 @@ public class JoinIndex extends Index {
     }
 
     private List<QueryResult> joinResult(List<QueryResult> coreResults, List<QueryResult> sideResults, Index sideInd) {
+        String sql = "";
         try {
             System.out.println("coreResult#:" + coreResults.size());
             System.out.println("sideResult#:" + sideResults.size());
@@ -145,7 +147,7 @@ public class JoinIndex extends Index {
             for (QueryResult qr : sideResults) {
                 sideMap.put(qr.getTupleId(), qr);
             }
-            String sql = "SELECT " + sideInd.getPivot().getAttrId() + ", " + sideInd.getPivot().getAttrCore() + ", " + sideInd.getPivot().getAttrSide() + " from " + sideInd.getPivot().getTableName() + " where "
+            sql = "SELECT " + sideInd.getPivot().getAttrId() + ", " + sideInd.getPivot().getAttrCore() + ", " + sideInd.getPivot().getAttrSide() + " from " + sideInd.getPivot().getTableName() + " where "
                     + sideInd.getPivot().getAttrCore() + " in (" + implode(coreResults) + ") and "
                     + sideInd.getPivot().getAttrSide() + " in (" + implode(sideResults) + ")";
             System.out.println("Running Query... [" + sql + "]");
@@ -171,7 +173,8 @@ public class JoinIndex extends Index {
 //            System.out.println("Done");
             return new ArrayList<>(coreMap.values());
         } catch (SQLException ex) {
-            Logger.getLogger(JoinIndex.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Exception SQL ON >>>>>>>>>>>> " + sql);
+            ex.printStackTrace();
         }
         return null;
     }

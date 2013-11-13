@@ -18,7 +18,9 @@ import qcap.app.query.Query;
 public class ExecuteBuilder {
 
     public static void main(String[] args) {
-        genExecFileByFile(Constants.STYPE_PERSON, "continent-test", "person-400-1.txt");
+    //    genExecFileByFile(Constants.STYPE_PERSON, "celebrity-sample400-test", "person-400-1.txt");
+      genExecFileByFile(Constants.STYPE_PERSON, "actor-reverse-sample400-2-test", "person-400-1.txt");
+    
     }
 
     public static void genExecFileByDB(String semanticType, String runFileName) {

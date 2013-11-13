@@ -14,11 +14,11 @@ public class AppConfig {
     public static final Integer QUERY_MAX_RESULTS = 10000;
     public static final Integer FETCH_SIZE = 10000;
     public static final Double SMOOTHING_FACTOR = 0.5;
-    public static final String DB_CONNECTION_STR = "jdbc:mysql://localhost/freebase";
+    public static final String DB_CONNECTION_STR = "jdbc:mysql://localhost/freebase3";
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "";
     public static final int LIMIT_QUERY = 5;
-    public static final String BASE_DIR = "/home/aleyase2/galago-project/datasets/";
+    public static final String BASE_DIR = "/srv/data/projects/dataset/Freebase/experiment/";
     public static final String QUERY_DIR = BASE_DIR + "query/";
     public static final String TEMP_DIR = BASE_DIR + "temp/";
     public static final String RESULT_DIR = BASE_DIR + "result/";
