@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Serialize objects in .csv file based on object template. Use buffer writer
@@ -68,6 +70,8 @@ public class CSVWriter {
                 csvWriter.write(FIELD_SEPERATOR);
             }
             csvWriter.write(LINE_SEPERATOR);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(CSVWriter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             System.out.println(ex.getStackTrace());
         }
@@ -86,7 +90,7 @@ public class CSVWriter {
         }
     }
 
-    private String getField(Object obj, String field) {
+    private String getField(Object obj, String field) throws InvocationTargetException {
         Object result = null;
         try {
             if (obj == null) {
@@ -100,7 +104,11 @@ public class CSVWriter {
             if (result == null) {
                 return null;
             }
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(CSVWriter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(CSVWriter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
             System.out.println(ex.getStackTrace());
         }
         return result.toString();

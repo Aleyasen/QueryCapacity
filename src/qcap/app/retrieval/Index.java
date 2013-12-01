@@ -20,7 +20,7 @@ public class Index {
     PivotTable pivot;
 
     public Index(){
-        acceptList = new ArrayList<>();
+        acceptList = new ArrayList<String>();
     }
     public PivotTable getPivot() {
         return pivot;

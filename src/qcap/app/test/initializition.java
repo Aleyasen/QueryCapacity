@@ -19,17 +19,77 @@ import qcap.app.retrieval.Field;
 public class initializition {
 
     public static void main(String[] args) {
-        buildAllPersonTable();
+        buildSemanticTypesTable();
+        //  buildAllPersonTable();
+        //    buildProfessionViews();
+        // buildEducationViews();
+    }
+
+    public static void buildSemanticTypesTable() {
+//        buildTables(Constants.TBL_BOOK, true);
+//        buildTables(Constants.TBL_ALBUM, true);
+    //    buildTables(Constants.VI_FILM_TV_GAME, true);
+
+        buildTables(Constants.VI_ALBUM_BOOK, true);
+
+        buildTables(Constants.VI_FILM_TV, true);
+
+        buildTables(Constants.VI_GAME_ALBUM, true);
+
+        buildTables(Constants.VI_BOOK, true);
     }
 
     public static void buildAllPersonTable() {
 //        buildTables(Constants.TBL_PERSON, true);
 //        buildTables(Constants.TBL_PROFESSION, false);
 //        buildTables(Constants.TBL_NATIONALITY, false);
-        buildTables(Constants.VI_PERSON_ART, true);
-        buildTables(Constants.VI_PERSON_SPORT, true);
-        buildTables(Constants.VI_PERSON_PROFESSION_OTHER, true);
+//        buildTables(Constants.VI_PERSON_ART, true);
+//        buildTables(Constants.VI_PERSON_SPORT, true);
+//        buildTables(Constants.VI_PERSON_PROFESSION_OTHER, true);
+        buildTables(Constants.TBL_EDUCATION, false);
+    }
 
+    public static void buildEducationViews() {
+        buildTables(Constants.VI_PERSON_EDU_HONG_KONG_COLLEGE_OF_MEDICINE_FOR_CHINESE, true);
+        buildTables(Constants.VI_PERSON_EDU_UNIVERSITY_OF_KENTUCKY, true);
+        buildTables(Constants.VI_PERSON_EDU_ST_VINCENT_ST_MARY_HIGH_SCHOOL, true);
+        buildTables(Constants.VI_PERSON_EDU_THE_BOSTON_CONSERVATORY, true);
+        buildTables(Constants.VI_PERSON_EDU_LOUISIANA_STATE_UNIVERSITY, true);
+        buildTables(Constants.VI_PERSON_EDU_LOWER_MERION_HIGH_SCHOOL, true);
+        buildTables(Constants.VI_PERSON_EDU_UNIVERSITY_OF_ALABAMA, true);
+        buildTables(Constants.VI_PERSON_EDU_NORTH_FORT_MYERS_HIGH_SCHOOL, true);
+        buildTables(Constants.VI_PERSON_EDU_UNIVERSITY_OF_CALIFORNIA_LOS_ANGELES, true);
+        buildTables(Constants.VI_PERSON_EDU_SOUTH_SIDE_HIGH_SCHOOL, true);
+    }
+
+    public static void buildProfessionViews() {
+        buildTables(Constants.VI_PERSON_PROF_PROPHET, true);
+        buildTables(Constants.VI_PERSON_PROF_DESIGNER, true);
+        buildTables(Constants.VI_PERSON_PROF_PIRATE, true);
+        buildTables(Constants.VI_PERSON_PROF_STUNT_PERFORMER, true);
+        buildTables(Constants.VI_PERSON_PROF_WRITER, true);
+        buildTables(Constants.VI_PERSON_PROF_VIOLINIST, true);
+        buildTables(Constants.VI_PERSON_PROF_PLAYWRIGHT, true);
+        buildTables(Constants.VI_PERSON_PROF_BASKETBALL_PLAYER, true);
+        buildTables(Constants.VI_PERSON_PROF_TRADE_UNIONIST, true);
+        buildTables(Constants.VI_PERSON_PROF_COMEDIAN, true);
+        buildTables(Constants.VI_PERSON_PROF_NUDE_GLAMOUR_MODEL, true);
+        buildTables(Constants.VI_PERSON_PROF_DIPLOMAT, true);
+        buildTables(Constants.VI_PERSON_PROF_LAWYER, true);
+        buildTables(Constants.VI_PERSON_PROF_SOCIOLOGIST, true);
+        buildTables(Constants.VI_PERSON_PROF_SINGER, true);
+        buildTables(Constants.VI_PERSON_PROF_BASEBALL_PLAYER, true);
+        buildTables(Constants.VI_PERSON_PROF_ICE_HOCKEY_PLAYER, true);
+        buildTables(Constants.VI_PERSON_PROF_CROWN_PRINCESS, true);
+        buildTables(Constants.VI_PERSON_PROF_RAPPER, true);
+        buildTables(Constants.VI_PERSON_PROF_TALK_SHOW_HOST, true);
+        buildTables(Constants.VI_PERSON_PROF_FILM_PRODUCER, true);
+        buildTables(Constants.VI_PERSON_PROF_OPERA_COMPOSER, true);
+        buildTables(Constants.VI_PERSON_PROF_AMERICAN_FOOTBALL_PLAYER, true);
+        buildTables(Constants.VI_PERSON_PROF_POET, true);
+        buildTables(Constants.VI_PERSON_PROF_INVENTOR, true);
+        buildTables(Constants.VI_PERSON_PROF_MATHEMATICIAN, true);
+        buildTables(Constants.VI_PERSON_PROF_JOURNALIST, true);
     }
 
     public static void buildTables(String table, boolean desc) {

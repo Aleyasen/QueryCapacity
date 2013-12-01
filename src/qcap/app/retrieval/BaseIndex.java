@@ -142,7 +142,7 @@ public class BaseIndex extends Index {
 
     public BaseIndex(String table) {
         this.table = table;
-        acceptList = new ArrayList<>();
+        acceptList = new ArrayList<String>();
         load();
     }
 
@@ -163,8 +163,8 @@ public class BaseIndex extends Index {
 
             String fieldsStr = prop.getProperty(PROB_FIELDS);
             String[] split = fieldsStr.split(",");
-            fields = new ArrayList<>();
-            fieldsMap = new HashMap<>();
+            fields = new ArrayList<Field>();
+            fieldsMap = new HashMap<String,Field>();
             for (String field : split) {
                 Field f = new Field(field);
                 System.out.println(PROB_FIELD + "." + f.getName() + "." + PROB_FIELD_VOCAB_COUNT);
@@ -329,7 +329,7 @@ public class BaseIndex extends Index {
         try {
             indexFile = new File(this.getIndexDirectory());
             trecCorpusFile = new File(this.getTrecFile());
-            List<String> params = new ArrayList<>();
+            List<String> params = new ArrayList<String>();
             params.addAll(Arrays.asList("build", "--indexPath=" + indexFile.getAbsolutePath(), "--inputPath=" + trecCorpusFile.getAbsolutePath(), "--server=true", "--galagoJobDir=" + AppConfig.TEMP_DIR + "galagoJob"));
             for (Field field : this.getFields()) {
                 String str = "--tokenizer/fields+" + field.getName();
@@ -372,7 +372,7 @@ public class BaseIndex extends Index {
 
     public List<QueryResult> getResult() {
         try {
-            List<QueryResult> list = new ArrayList<>();
+            List<QueryResult> list = new ArrayList<QueryResult>();
             BufferedReader reader = new BufferedReader(new FileReader(this.getResultFile()));
             String line = reader.readLine();
             list.add(new QueryResult());

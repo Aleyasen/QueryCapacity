@@ -28,7 +28,7 @@ import qcap.app.retrieval.*;
  */
 public class IndexTester {
 
-    static Map<String, BaseIndex> indsmap = new HashMap<>();
+    static Map<String, BaseIndex> indsmap = new HashMap<String, BaseIndex>();
     static String[] tables = {/*TBL_PERSON, TBL_PROFESSION,*/Constants.TBL_CHILDREN, Constants.TBL_EDUCATION, Constants.TBL_EMPLOYMENT, Constants.TBL_ETHNICITY, Constants.TBL_GENDER, Constants.TBL_NATIONALITY, Constants.TBL_PARENT, Constants.TBL_PLACES_LIVED, Constants.TBL_PLACE_OF_BIRTH, Constants.TBL_QUOTATION, Constants.TBL_RELIGION, Constants.TBL_SIBLING, Constants.TBL_SPOUSE};
 
     public static void main(String[] args) {

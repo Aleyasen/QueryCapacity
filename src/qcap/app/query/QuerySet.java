@@ -21,8 +21,8 @@ public class QuerySet {
     public List<QueryStatement> weights;
 
     public QuerySet() {
-        queries = new ArrayList<>();
-        weights = new ArrayList<>();
+        queries = new ArrayList<Query>();
+        weights = new ArrayList<QueryStatement>();
     }
 
     public static Map<Set<String>, Integer> calcQueriesStats(String semanticType) {

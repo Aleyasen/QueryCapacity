@@ -27,10 +27,10 @@ public class QueryResult {
     private Double score;
     private Double weight;
     private Integer rank;
-    private Integer sourceCollection; 
+    private Integer sourceCollection;
 
     public QueryResult() {
-        indvResults = new ArrayList<>();
+        indvResults = new ArrayList<QueryResult>();
     }
 
     public Integer getSourceCollection() {
@@ -41,7 +41,6 @@ public class QueryResult {
         this.sourceCollection = sourceCollection;
     }
 
-    
     public Double getWeight() {
         return weight;
     }
@@ -56,7 +55,7 @@ public class QueryResult {
 
     public void addIndvResult(QueryResult indvResult) {
         if (indvResult == null) {
-            indvResults = new ArrayList<>();
+            indvResults = new ArrayList<QueryResult>();
         }
         indvResults.add(indvResult);
     }
@@ -124,11 +123,26 @@ public class QueryResult {
 
     @Override
     public String toString() {
-        return "QueryResult{" + "tupleId=" + tupleId + ", queryId=" + queryId + ", fbid=" + fbid + ", score=" + score + ", rank=" + rank + "}\n";
+        return " QueryResult{" + "tupleId=" + tupleId + ", queryId=" + queryId + ", fbid=" + fbid + ", score=" + score + ", rank=" + rank + "}\n";
     }
 
+    @Override
+    public QueryResult clone(){
+        QueryResult newObj = new QueryResult();
+        newObj.fbid = this.fbid;
+        newObj.queryId = this.queryId;
+        newObj.rank = this.rank;
+        newObj.score = this.score;
+        newObj.sourceCollection = this.sourceCollection;
+        newObj.tupleId = this.tupleId;
+        newObj.weight = this.weight;
+        return newObj;
+    }
+    
+    
+
     public static List<QueryResult> parseOutput(BaseIndex index, String output, Query objQ) {
-        List<QueryResult> results = new ArrayList<>();
+        List<QueryResult> results = new ArrayList<QueryResult>();
         String[] lines = output.split("\n");
         for (int i = 0; i < lines.length; i++) {
             if (lines[i] != null && lines[i].length() > 0) {

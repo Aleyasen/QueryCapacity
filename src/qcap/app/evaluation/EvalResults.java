@@ -112,7 +112,7 @@ public class EvalResults {
         int zeroMRR = 0;
 
         Collection<Query> queries = Query.findAll();
-        Map<Integer, Query> queryMap = new HashMap<>();
+        Map<Integer, Query> queryMap = new HashMap<Integer, Query>();
         for (Query q : queries) {
             queryMap.put(q.getId(), q);
         }

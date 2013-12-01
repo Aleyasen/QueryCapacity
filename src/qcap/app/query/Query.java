@@ -57,12 +57,13 @@ public class Query {
     }
 
     private static Query dropStatement(Query q, String attribute) {
+        List<QueryStatement> removeList = new ArrayList<QueryStatement>();
         for (QueryStatement qs : q.getStatements()) {
             if (qs.attribute.equals(attribute)) {
-                q.getStatements().remove(qs);
-                break;
+                removeList.add(qs);
             }
         }
+        q.getStatements().removeAll(removeList);
         return q;
     }
     Integer id;
@@ -75,7 +76,7 @@ public class Query {
     String fbid;
 
     public Query() {
-        statements = new ArrayList<>();
+        statements = new ArrayList<QueryStatement>();
     }
     private static String baseQuery = "SELECT q.id qid, entity_id, frequency, q.text qtext, attributes_count, semantic_type, fbid, s.id sid, attribute, value "
             + "FROM tbl_query q, tbl_statement s "
@@ -129,7 +130,7 @@ public class Query {
 
     public static List<Query> loadQueryFromFile(String filePath, int offset, int limit) {
         List<Query> queries = Query.loadQueryFromFile(filePath);
-        List<Query> sub_queries = new ArrayList<>();
+        List<Query> sub_queries = new ArrayList<Query>();
 
         int upper_bound = Math.min(limit + offset, queries.size());
         for (int i = offset; i < upper_bound; i++) {
@@ -144,7 +145,7 @@ public class Query {
     public static List<Query> loadQueryFromFile(String filePath) {
         try {
             List<Query> allQueries = Query.findAll();
-            List<Query> loadedQueries = new ArrayList<>();
+            List<Query> loadedQueries = new ArrayList<Query>();
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -202,13 +203,13 @@ public class Query {
 
     public void addQueryStatement(QueryStatement statement) {
         if (statements == null) {
-            statements = new ArrayList<>();
+            statements = new ArrayList<QueryStatement>();
         }
         statements.add(statement);
     }
 
     public List<String> getAttributesList() {
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         for (QueryStatement st : statements) {
             list.add(st.getAttribute());
         }
@@ -221,7 +222,7 @@ public class Query {
     }
 
     public static List<Query> findById(List<Integer> ids) {
-        List<Query> result = new ArrayList<>();
+        List<Query> result = new ArrayList<Query>();
         for (Integer id : ids) {
             result.addAll(findById(id));
         }
@@ -236,7 +237,7 @@ public class Query {
 
     public static List<Query> findBySemanticType(String semanticType, int offset, int limit) {
         List<Query> queries = Query.findBySemanticType(semanticType);
-        List<Query> sub_queries = new ArrayList<>();
+        List<Query> sub_queries = new ArrayList<Query>();
 
         int upper_bound = Math.min(limit + offset, queries.size());
         for (int i = offset; i < upper_bound; i++) {
@@ -252,7 +253,7 @@ public class Query {
 
     private static List<Query> find(String query) {
         try {
-            Map<Integer, Query> map = new HashMap<>();
+            Map<Integer, Query> map = new HashMap<Integer, Query>();
             ResultSet rs = DBManager.execQuery(query);
             while (rs.next()) {
                 int queryId = rs.getInt("qid");
@@ -307,8 +308,8 @@ public class Query {
 
     public static List<Query> getSampleQueries(String semanticType, int size) {
         List<Query> queries = Query.findBySemanticType(semanticType);
-        List<Query> subSampleQueries = new ArrayList<>();
-        List<Integer> idList = new ArrayList<>();
+        List<Query> subSampleQueries = new ArrayList<Query>();
+        List<Integer> idList = new ArrayList<Integer>();
         for (Query query : queries) {
             idList.add(query.getId());
         }

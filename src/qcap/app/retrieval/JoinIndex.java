@@ -37,7 +37,7 @@ public class JoinIndex extends Index {
             System.out.println("Retrieve JoinIndex:" + query.getText());
             Query subQueryCore = Query.generateSubQueries(query, core);
             System.out.println("Core SubQuery: " + subQueryCore);
-            Map<Query, Index> sidesQueryMap = new HashMap<>();
+            Map<Query, Index> sidesQueryMap = new HashMap<Query, Index>();
             for (Index sideInd : sides) {
                 Query subQuerySide = Query.generateSubQueries(query, sideInd);
                 if (subQuerySide != null) {
@@ -74,7 +74,13 @@ public class JoinIndex extends Index {
             for (Query subQuery : sidesQueryMap.keySet()) {
                 Index sideInd = sidesQueryMap.get(subQuery);
                 List<QueryResult> sideResults = sideInd.retrieve(subQuery, ranking);
+                System.out.println("Side Result");
+                printQueryResult(sideResults, 100, "profession");
                 List<QueryResult> joinResults = joinResult(coreResults, sideResults, sideInd);
+                System.out.println("Join Result");
+                Collections.sort(joinResults, new QueryResultComparator());
+
+                printQueryResult(joinResults, 1000, "person");
                 System.out.println("SubQuery:" + subQuery + " Index:" + sideInd);
                 coreResults = joinResults;
                 System.out.println("SideResults#:" + sideResults.size() + " JoinResult#:" + joinResults.size());
@@ -89,24 +95,33 @@ public class JoinIndex extends Index {
                     result.setScore(score);
                 }
             } else if (ranking.equals(Constants.METHOD_IR_STYLE) || ranking.equals(Constants.METHOD_LM)) {
+                System.out.println("Number or Core Results:" + coreResults.size());
                 for (QueryResult result : coreResults) {
                     int attrCount = 0;
-                    double totalScore = 0.0;
+                    printQueryResult(result, "person");
+                    double totalScore = result.getScore();
+                    System.out.println("core score"+result.getScore());
                     //calculate totalWeight
                     for (QueryResult subresult : result.getIndvResults()) {
+                        System.out.println("subresult score: " + subresult.getScore());
                         totalScore += subresult.getScore();
                     }
                     //calculate number of attributes
                     attrCount += subQueryCore.getAttributesCount();
+                    //System.out.println("");
                     for (Query subQuery : sidesQueryMap.keySet()) {
                         attrCount += subQuery.getAttributesCount();
                     }
+                    System.out.println("totalScore:" + totalScore);
+                    System.out.println("attrCount:" + attrCount);
                     double score = totalScore / attrCount;
+                    System.out.println("Final Score:" + score);
                     result.setScore(score);
                     //  System.out.println("Attributes#:" + attrCount + " TotalScore:" + totalScore + " Score:" + score);
                 }
             }
             Collections.sort(coreResults, new QueryResultComparator());
+            printQueryResult(coreResults, 1000, "person");
             return coreResults;
         } catch (Exception ex) {
             System.out.println("Exception ON >>>>>>>>>>>> " + query);
@@ -125,7 +140,7 @@ public class JoinIndex extends Index {
 
     public void addSideIndex(Index sideIndex) {
         if (sides == null) {
-            sides = new ArrayList<>();
+            sides = new ArrayList<Index>();
         }
         sides.add(sideIndex);
     }
@@ -136,11 +151,12 @@ public class JoinIndex extends Index {
 
     private List<QueryResult> joinResult(List<QueryResult> coreResults, List<QueryResult> sideResults, Index sideInd) {
         String sql = "";
+        List<QueryResult> finalResult = new ArrayList<QueryResult>();
         try {
             System.out.println("coreResult#:" + coreResults.size());
             System.out.println("sideResult#:" + sideResults.size());
-            Map<String, QueryResult> coreMap = new HashMap<>();
-            Map<String, QueryResult> sideMap = new HashMap<>();
+            Map<String, QueryResult> coreMap = new HashMap<String, QueryResult>();
+            Map<String, QueryResult> sideMap = new HashMap<String, QueryResult>();
             for (QueryResult qr : coreResults) {
                 coreMap.put(qr.getTupleId(), qr);
             }
@@ -157,10 +173,10 @@ public class JoinIndex extends Index {
                 count++;
                 String coreTupleId = rs.getString(sideInd.getPivot().getAttrCore());
                 String sideTupleId = rs.getString(sideInd.getPivot().getAttrSide());
-                coreMap.get(coreTupleId).addIndvResult(sideMap.get(sideTupleId));
-                //qr.setTupleId(rs.getString(sideInd.getPivot().getAttrId()));
-                //   qr.setScore(calcJoinScore(resultmap1.get(tuple1), resultmap2.get(tuple2)));
-                //finalResult.add(qr);
+                QueryResult qr = coreMap.get(coreTupleId).clone();
+                qr.addIndvResult(sideMap.get(sideTupleId));
+                qr.setTupleId(rs.getString(sideInd.getPivot().getAttrId()));
+                finalResult.add(qr);
             }
             System.out.println("Pivot#:" + count);
 //            System.out.println("Sorting Results...");
@@ -171,7 +187,7 @@ public class JoinIndex extends Index {
 //                rank++;
 //            }
 //            System.out.println("Done");
-            return new ArrayList<>(coreMap.values());
+            return finalResult;
         } catch (SQLException ex) {
             System.out.println("Exception SQL ON >>>>>>>>>>>> " + sql);
             ex.printStackTrace();
@@ -190,6 +206,24 @@ public class JoinIndex extends Index {
             return str.substring(0, str.length() - 1);
         } else {
             return str;
+        }
+    }
+
+    private void printQueryResult(List<QueryResult> results, int max, String type) {
+        for (QueryResult qr : results) {
+            max--;
+            if (max == 0) {
+                break;
+            }
+            printQueryResult(qr, type);
+        }
+    }
+
+    private void printQueryResult(QueryResult result, String type) {
+        System.out.println(DBManager.getName(result.getFbid(), type) + result);
+        for (QueryResult indv : result.getIndvResults()) {
+            System.out.println("Indv: " + DBManager.getName(indv.getFbid(), "profession") + indv);
+
         }
     }
 }

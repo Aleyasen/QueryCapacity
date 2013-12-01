@@ -14,6 +14,6 @@ public class QueryResultComparator implements Comparator<QueryResult> {
 
     @Override
     public int compare(QueryResult o1, QueryResult o2) {
-        return o1.getScore().compareTo(o2.getScore());
+        return o2.getScore().compareTo(o1.getScore());
     }
 }

@@ -29,7 +29,13 @@ public class DBManager {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             Connection newConn = DriverManager.getConnection(AppConfig.DB_CONNECTION_STR, AppConfig.DB_USERNAME, AppConfig.DB_PASSWORD);
             return newConn;
-        } catch (InstantiationException | IllegalAccessException | SQLException | ClassNotFoundException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -49,9 +55,9 @@ public class DBManager {
         return null;
     }
 
-    public static String getPersonName(String fbid) {
+    public static String getName(String fbid, String type) {
         try {
-            String query = "SELECT * FROM freebase.tbl_person where fbid=\"" + fbid + "\"";
+            String query = "SELECT * FROM freebase.tbl_" + type + " where fbid=\"" + fbid + "\"";
             ResultSet rs = execQuery(query);
             while (rs.next()) {
                 String name = rs.getString("name");
@@ -61,5 +67,9 @@ public class DBManager {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static String getPersonName(String fbid) {
+        return getName(fbid, "person");
     }
 }

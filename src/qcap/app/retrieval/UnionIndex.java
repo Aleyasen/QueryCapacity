@@ -61,7 +61,7 @@ public class UnionIndex extends Index {
 
     @Override
     public List<QueryResult> retrieve(Query query, String ranking) {
-        List<QueryResult> allResults = new ArrayList<>();
+        List<QueryResult> allResults = new ArrayList<QueryResult>();
         System.out.println("Retrieve UnionIndex[children#:" + children.size() + "]" + query.getText());
         int count = 1;
         for (Index ind : children) {
