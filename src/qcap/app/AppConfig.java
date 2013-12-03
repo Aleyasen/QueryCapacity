@@ -24,5 +24,5 @@ public class AppConfig {
     public static final String RESULT_DIR = BASE_DIR + "result/";
     public static final String EXEC_DIR = BASE_DIR + "execute/";
     public static final int QUERY_SAMPLE_SIZE = 400;
-    public static final String JAR_FILE_LOCATION = "/home/aleyase2/galago-project/QueryCapacity/dist/QueryCapacity.jar";
+    public static final String JAR_FILE_LOCATION = "/srv/data/projects/dataset/Freebase/code/QueryCapacity/dist/QueryCapacity.jar";
 }
