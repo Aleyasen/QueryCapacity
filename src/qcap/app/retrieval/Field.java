@@ -43,4 +43,11 @@ public class Field {
         this.WordCount = WordCount;
     }
 
+    @Override
+    public String toString() {
+        return "Field{" + "name=" + name + ", VocabCount=" + VocabCount + ", WordCount=" + WordCount + '}';
+    }
+    
+    
+
 }

@@ -22,7 +22,6 @@ public class Constants {
     public static final String TBL_AUTHOR = "tbl_author";
     public static final String TBL_PROFESSION = "tbl_profession";
     public static final String TBL_ALBUM = "tbl_album";
-    
     public static final String TBL_PLACES_LIVED = "tbl_places_lived";
     public static final String TBL_NATIONALITY = "tbl_nationality";
     public static final String TBL_CHILDREN = "tbl_children";
@@ -98,14 +97,11 @@ public class Constants {
     public static final String VI_PERSON_PROF_INVENTOR = "vi_person_prof_inventor";
     public static final String VI_PERSON_PROF_MATHEMATICIAN = "vi_person_prof_mathematician";
     public static final String VI_PERSON_PROF_JOURNALIST = "vi_person_prof_journalist";
-    
     public static final String VI_FILM_TV_GAME = "vi_film_tv_game";
     public static final String VI_ALBUM_BOOK = "vi_album_book";
     public static final String VI_FILM_TV = "vi_film_tv";
     public static final String VI_GAME_ALBUM = "vi_game_album";
     public static final String VI_BOOK = "vi_book";
-    
-    
     public static final String VI_PERSON_EDU_HONG_KONG_COLLEGE_OF_MEDICINE_FOR_CHINESE = "vi_person_edu_hong_kong_college_of_medicine_for_chinese";
     public static final String VI_PERSON_EDU_UNIVERSITY_OF_KENTUCKY = "vi_person_edu_university_of_kentucky";
     public static final String VI_PERSON_EDU_ST_VINCENT_ST_MARY_HIGH_SCHOOL = "vi_person_edu_st_vincent_st_mary_high_school";
@@ -116,9 +112,13 @@ public class Constants {
     public static final String VI_PERSON_EDU_NORTH_FORT_MYERS_HIGH_SCHOOL = "vi_person_edu_north_fort_myers_high_school";
     public static final String VI_PERSON_EDU_UNIVERSITY_OF_CALIFORNIA_LOS_ANGELES = "vi_person_edu_university_of_california_los_angeles";
     public static final String VI_PERSON_EDU_SOUTH_SIDE_HIGH_SCHOOL = "vi_person_edu_south_side_high_school";
-
+    public static final String TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM = "tbl_tv_program_union_film_and_tv_program";
+    public static final String TBL_FILM_UNION_FILM_AND_TV_PROGRAM = "tbl_film_union_film_and_tv_program";
     
-    
+    public static final String TBL_TV_PROGRAM_W_TYPE = "tbl_tv_program_w_type";
+    public static final String TBL_FILM_W_TYPE = "tbl_film_w_type";
+    public static final String TBL_FILM_AND_TV_PROGRAM_W_TYPE = "tbl_film_and_tv_program_w_type";
+    public static final String TBL_FILM_OR_TV_PROGRAM_W_TYPE = "tbl_film_or_tv_program_w_type";
     public static final String METHOD_IR_STYLE = "IR-Style";
     public static final String METHOD_PRMS = "PRMS";
     public static final String METHOD_LM = "LM";
@@ -150,6 +150,11 @@ public class Constants {
         table.put("original_network", "tbl_network");
         table.put("tv_program_genre", "tbl_prog_genre");
 
+        //film
+        table.put("film_name", "tbl_film");
+        table.put("film_description", "tbl_film");
+        
+        
         //book
         table.put("book_name", "tbl_book");
         table.put("book_description", "tbl_book");
@@ -185,6 +190,11 @@ public class Constants {
         attribute.put("original_network", "name");
         attribute.put("tv_program_genre", "name");
 
+        //tv_program
+        attribute.put("film_name", "name");
+        attribute.put("film_description", "description");
+        
+        
         //book
         attribute.put("book_name", "name");
         attribute.put("book_description", "description");

@@ -11,7 +11,7 @@ package qcap.app;
  */
 public class AppConfig {
 
-    public static final Integer QUERY_MAX_RESULTS = 50000;
+    public static final Integer QUERY_MAX_RESULTS = 1000;
     public static final Integer FETCH_SIZE = 10000;
     public static final Double SMOOTHING_FACTOR = 0.5;
     public static final String DB_CONNECTION_STR = "jdbc:mysql://localhost/freebase3";

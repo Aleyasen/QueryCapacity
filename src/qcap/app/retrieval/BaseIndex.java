@@ -505,6 +505,15 @@ public class BaseIndex extends Index {
     public void setResultFile(String resultFile) {
         this.resultFile = resultFile;
     }
+
+    @Override
+    public String toString() {
+        return "BaseIndex{" + "prop=" + prop + ", query=" + query + ", table=" + table + ", fields=" + fields + '}';
+    }
+
+    
+    
+    
     private static String PROP_TABLE = "table";
     private static String PROP_QUERY = "query";
     private static String PROP_ID_QUERY = "idQuery";
