@@ -114,6 +114,7 @@ public class Constants {
     public static final String VI_PERSON_EDU_SOUTH_SIDE_HIGH_SCHOOL = "vi_person_edu_south_side_high_school";
     public static final String TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM = "tbl_tv_program_union_film_and_tv_program";
     public static final String TBL_FILM_UNION_FILM_AND_TV_PROGRAM = "tbl_film_union_film_and_tv_program";
+    public static final String TBL_OTHER_UNION_FILM_AND_TV_PROGRAM = "tbl_other_union_film_and_tv_program";
     
     public static final String TBL_TV_PROGRAM_W_TYPE = "tbl_tv_program_w_type";
     public static final String TBL_FILM_W_TYPE = "tbl_film_w_type";

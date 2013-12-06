@@ -30,10 +30,11 @@ public class initializition {
 
     public static void buildFilmAndOrTVIndices() {
         List<String> fields = Arrays.asList("name", "description", "type");
-        buildIndex(Constants.TBL_TV_PROGRAM_W_TYPE, fields);
-        buildIndex(Constants.TBL_FILM_W_TYPE, fields);
-        buildIndex(Constants.TBL_FILM_UNION_FILM_AND_TV_PROGRAM, fields);
-        buildIndex(Constants.TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM, fields);
+//        buildIndex(Constants.TBL_TV_PROGRAM_W_TYPE, fields);
+//        buildIndex(Constants.TBL_FILM_W_TYPE, fields);
+//        buildIndex(Constants.TBL_FILM_UNION_FILM_AND_TV_PROGRAM, fields);
+//        buildIndex(Constants.TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM, fields);
+        buildIndex(Constants.TBL_OTHER_UNION_FILM_AND_TV_PROGRAM, fields);
     }
 
     public static void buildSemanticTypesTable() {
