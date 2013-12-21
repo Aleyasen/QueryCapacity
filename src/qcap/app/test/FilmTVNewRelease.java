@@ -31,50 +31,21 @@ public class FilmTVNewRelease extends TransformationTester {
         q_desired_film_not_contain_film = Arrays.asList(44882, 50041, 43019, 43267, 43580, 45110, 45192, 45347, 45516, 45596, 47052, 47059, 48368, 48442, 48788, 48964, 49375, 49512, 49708, 49730, 49800, 49863, 48494);
         q_desired_film_contain_film = new ArrayList<Integer>();
         q_desired_tv_not_contain_tv = new ArrayList<Integer>();
-   }
+    }
 
     public static void main(String[] args) {
 //        testSourceSchemaDuplicate("tv__film_notable_type_source_schema_duplicate_new_incorrect.txt");
 //        testSourceSchema("tv_and_or_film_source_schema_7.txt");
-              testTargetSchema("tv__film_notable_type_target_schema_new_incorrect.txt");
-    }
-
-    public static void testSourceSchemaDuplicate(String resultFile) {
-
-        Collection<Query> q_tv_text_obj = Query.findById(q_desired_tv_contain_tv);
-        Collection<Query> q_television_text_obj = Query.findById(q_desired_tv_not_contain_tv);
-        Collection<Query> q_film_text_obj = Query.findById(q_desired_film_not_contain_film);
-        Collection<Query> q_movie_text_obj = Query.findById(q_desired_film_contain_film);
-
-//        Collection<Query> queries = Query.findById(47654);
-
-        List<String> filmTVacceptList = Arrays.asList("tv_program_name", "tv_program_description", "film_name", "film_description");
-
-        BaseIndex tv_program_index = new BaseIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE);
-        tv_program_index.setAcceptList(filmTVacceptList);
-
-        BaseIndex film_index = new BaseIndex(Constants.TBL_FILM_W_NOTABLE_TYPE);
-        film_index.setAcceptList(filmTVacceptList);
-
-
-        execBatchQueries(q_tv_text_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_television_text_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
-
-        execBatchQueries(q_film_text_obj, film_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_movie_text_obj, film_index, AppConfig.RESULT_DIR + resultFile);
-
-
+        testTargetSchema("tv__film_notable_type_target_schema_new_incorrect.txt");
     }
 
     public static void testSourceSchema(String resultFile) {
-
-        Collection<Query> q_tv_text_obj = Query.findById(q_desired_tv_contain_tv);
-        Collection<Query> q_television_text_obj = Query.findById(q_desired_tv_not_contain_tv);
-        Collection<Query> q_film_text_obj = Query.findById(q_desired_film_not_contain_film);
-        Collection<Query> q_movie_text_obj = Query.findById(q_desired_film_contain_film);
+        Collection<Query> q_desired_tv_contain_tv_obj = Query.findById(q_desired_tv_contain_tv);
+        Collection<Query> q_desired_tv_not_contain_tv_obj = Query.findById(q_desired_tv_not_contain_tv);
+        Collection<Query> q_desired_film_not_contain_film_obj = Query.findById(q_desired_film_not_contain_film);
+        Collection<Query> q_desired_film_contain_film_obj = Query.findById(q_desired_film_contain_film);
 
 //        Collection<Query> queries = Query.findById(47654);
-
         List<String> filmTVacceptList = Arrays.asList("tv_program_name", "tv_program_description", "film_name", "film_description");
 
         BaseIndex tv_program_index = new BaseIndex(Constants.TBL_TV_PROGRAM_W_TYPE);
@@ -83,46 +54,41 @@ public class FilmTVNewRelease extends TransformationTester {
         BaseIndex film_index = new BaseIndex(Constants.TBL_FILM_W_TYPE);
         film_index.setAcceptList(filmTVacceptList);
 
+        execBatchQueries(q_desired_tv_contain_tv_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_tv_not_contain_tv_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
 
-        execBatchQueries(q_tv_text_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_television_text_obj, tv_program_index, AppConfig.RESULT_DIR + resultFile);
-
-        execBatchQueries(q_film_text_obj, film_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_movie_text_obj, film_index, AppConfig.RESULT_DIR + resultFile);
-
+        execBatchQueries(q_desired_film_contain_film_obj, film_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_film_not_contain_film_obj, film_index, AppConfig.RESULT_DIR + resultFile);
 
     }
 
     public static void testTargetSchema(String resultFile) {
 
-        Collection<Query> q_tv_text_obj = Query.findById(q_desired_tv_contain_tv);
-        Collection<Query> q_television_text_obj = Query.findById(q_desired_tv_not_contain_tv);
-        Collection<Query> q_film_text_obj = Query.findById(q_desired_film_not_contain_film);
-        Collection<Query> q_movie_text_obj = Query.findById(q_desired_film_contain_film);
+        Collection<Query> q_desired_tv_contain_tv_obj = Query.findById(q_desired_tv_contain_tv);
+        Collection<Query> q_desired_tv_not_contain_tv_obj = Query.findById(q_desired_tv_not_contain_tv);
+        Collection<Query> q_desired_film_not_contain_film_obj = Query.findById(q_desired_film_not_contain_film);
+        Collection<Query> q_desired_film_contain_film_obj = Query.findById(q_desired_film_contain_film);
 
 //        Collection<Query> queries = Query.findById(47654);
-
-
         List<String> filmTVacceptList = Arrays.asList("tv_program_name", "tv_program_description", "film_name", "film_description");
 
-        BaseIndex tv_program_w_notable_type_union_tv_text = new BaseIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TV_TEXT);
-        tv_program_w_notable_type_union_tv_text.setAcceptList(filmTVacceptList);
+        BaseIndex tv_program_after_2000_union_other_tv_program_index = new BaseIndex(Constants.TBL_TV_PROGRAM_AFTER_2000_UNION_OTHER_TV_PROGRAM);
+        tv_program_after_2000_union_other_tv_program_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex tv_program_w_notable_type_union_television_text = new BaseIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TELEVISION_TEXT);
-        tv_program_w_notable_type_union_television_text.setAcceptList(filmTVacceptList);
+        BaseIndex tv_program_not_after_2000_index = new BaseIndex(Constants.TBL_TV_PROGRAM_NOT_AFTER_2000);
+        tv_program_not_after_2000_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex film_w_notable_type_union_film_text = new BaseIndex(Constants.TBL_FILM_W_NOTABLE_TYPE_UNION_FILM_TEXT);
-        film_w_notable_type_union_film_text.setAcceptList(filmTVacceptList);
+        BaseIndex film_after_2000_union_other_film_index = new BaseIndex(Constants.TBL_FILM_AFTER_2000_UNION_OTHER_FILM);
+        film_after_2000_union_other_film_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex film_w_notable_type_union_movie_text = new BaseIndex(Constants.TBL_FILM_W_NOTABLE_TYPE_UNION_MOVIE_TEXT);
-        film_w_notable_type_union_movie_text.setAcceptList(filmTVacceptList);
+        BaseIndex film_not_after_2000_index = new BaseIndex(Constants.TBL_FILM_NOT_AFTER_2000);
+        film_not_after_2000_index.setAcceptList(filmTVacceptList);
 
+        execBatchQueries(q_desired_tv_contain_tv_obj, tv_program_after_2000_union_other_tv_program_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_tv_not_contain_tv_obj, tv_program_not_after_2000_index, AppConfig.RESULT_DIR + resultFile);
 
-        execBatchQueries(q_tv_text_obj, tv_program_w_notable_type_union_tv_text, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_television_text_obj, tv_program_w_notable_type_union_television_text, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_film_text_obj, film_w_notable_type_union_film_text, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_movie_text_obj, film_w_notable_type_union_movie_text, AppConfig.RESULT_DIR + resultFile);
-
+        execBatchQueries(q_desired_film_contain_film_obj, film_after_2000_union_other_film_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_tv_not_contain_tv_obj, film_not_after_2000_index, AppConfig.RESULT_DIR + resultFile);
 
     }
 }
