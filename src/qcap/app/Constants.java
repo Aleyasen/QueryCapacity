@@ -135,6 +135,12 @@ public class Constants {
     public static final String TBL_FILM_AFTER_2000_UNION_OTHER_FILM = "tbl_film_after_2000_union_other_film";
     
     
+    public static final String TBL_TV_PROGRAM_NOT_FOR_KIDS = "tbl_tv_program_not_for_kids";
+    public static final String TBL_FILM_NOT_FOR_KIDS = "tbl_film_not_for_kids";
+    public static final String TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_for_kids_union_other_tv_program";
+    public static final String TBL_FILM_FOR_KIDS_UNION_OTHER_FILM = "tbl_film_for_kids_union_other_film";
+    
+    
     
     public static final String TBL_TV_PROGRAM_W_TYPE = "tbl_tv_program_w_type";
     public static final String TBL_FILM_W_TYPE = "tbl_film_w_type";

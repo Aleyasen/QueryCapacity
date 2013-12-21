@@ -19,7 +19,7 @@ import qcap.app.retrieval.PivotTable;
  *
  * @author aleyase2-admin
  */
-public class FilmTVNewRelease extends TransformationTester {
+public class FilmTVForKids extends TransformationTester {
 
     public static List<Integer> q_desired_tv_contain_tv;
     public static List<Integer> q_desired_tv_not_contain_tv;
@@ -38,8 +38,8 @@ public class FilmTVNewRelease extends TransformationTester {
     }
 
     public static void main(String[] args) {
-//        testSourceSchema("tv__film_new_release_source_schema_1.txt");
-        testTargetSchema("tv_film_new_release_target_schema_2.txt");
+//        testSourceSchema("tv__film_for_kids_source_schema_1.txt");
+        testTargetSchema("tv_film_for_kids_target_schema_1.txt");
     }
 
     public static void testSourceSchema(String resultFile) {
@@ -75,23 +75,23 @@ public class FilmTVNewRelease extends TransformationTester {
 //        Collection<Query> queries = Query.findById(47654);
         List<String> filmTVacceptList = Arrays.asList("tv_program_name", "tv_program_description", "film_name", "film_description");
 
-        BaseIndex tv_program_after_2000_union_other_tv_program_index = new BaseIndex(Constants.TBL_TV_PROGRAM_AFTER_2000_UNION_OTHER_TV_PROGRAM);
-        tv_program_after_2000_union_other_tv_program_index.setAcceptList(filmTVacceptList);
+        BaseIndex tv_program_for_kids_union_other_tv_program_index = new BaseIndex(Constants.TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM);
+        tv_program_for_kids_union_other_tv_program_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex tv_program_not_after_2000_index = new BaseIndex(Constants.TBL_TV_PROGRAM_NOT_AFTER_2000);
-        tv_program_not_after_2000_index.setAcceptList(filmTVacceptList);
+        BaseIndex tv_program_not_for_kids_index = new BaseIndex(Constants.TBL_TV_PROGRAM_NOT_FOR_KIDS);
+        tv_program_not_for_kids_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex film_after_2000_union_other_film_index = new BaseIndex(Constants.TBL_FILM_AFTER_2000_UNION_OTHER_FILM);
-        film_after_2000_union_other_film_index.setAcceptList(filmTVacceptList);
+        BaseIndex film_for_kids_union_other_film_index = new BaseIndex(Constants.TBL_FILM_FOR_KIDS_UNION_OTHER_FILM);
+        film_for_kids_union_other_film_index.setAcceptList(filmTVacceptList);
 
-        BaseIndex film_not_after_2000_index = new BaseIndex(Constants.TBL_FILM_NOT_AFTER_2000);
-        film_not_after_2000_index.setAcceptList(filmTVacceptList);
+        BaseIndex film_not_for_kids_index = new BaseIndex(Constants.TBL_FILM_NOT_FOR_KIDS);
+        film_not_for_kids_index.setAcceptList(filmTVacceptList);
 
-        execBatchQueries(q_desired_tv_contain_tv_obj, tv_program_after_2000_union_other_tv_program_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_desired_tv_not_contain_tv_obj, tv_program_not_after_2000_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_tv_contain_tv_obj, tv_program_for_kids_union_other_tv_program_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_tv_not_contain_tv_obj, tv_program_not_for_kids_index, AppConfig.RESULT_DIR + resultFile);
 
-        execBatchQueries(q_desired_film_contain_film_obj, film_after_2000_union_other_film_index, AppConfig.RESULT_DIR + resultFile);
-        execBatchQueries(q_desired_film_not_contain_film_obj, film_not_after_2000_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_film_contain_film_obj, film_for_kids_union_other_film_index, AppConfig.RESULT_DIR + resultFile);
+        execBatchQueries(q_desired_film_not_contain_film_obj, film_not_for_kids_index, AppConfig.RESULT_DIR + resultFile);
 
     }
 }

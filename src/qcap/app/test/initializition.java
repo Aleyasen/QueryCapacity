@@ -21,6 +21,8 @@ import qcap.app.retrieval.Field;
 public class initializition {
     
     public static void main(String[] args) {
+        buildFilmTVForKidsIndices();
+//        buildFilmTVNewReleaseIndices();
 //        buildFilmTVNotableTypeIndices();
 //        buildFilmAndOrTVIndices();
 //        buildSemanticTypesTable();
@@ -44,6 +46,13 @@ public class initializition {
         buildDefaultIndex(Constants.TBL_FILM_AFTER_2000_UNION_OTHER_FILM);
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_NOT_AFTER_2000);
         buildDefaultIndex(Constants.TBL_FILM_NOT_AFTER_2000);
+    }
+    
+    public static void buildFilmTVForKidsIndices() {
+        buildDefaultIndex(Constants.TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM);
+        buildDefaultIndex(Constants.TBL_FILM_FOR_KIDS_UNION_OTHER_FILM);
+        buildDefaultIndex(Constants.TBL_TV_PROGRAM_NOT_FOR_KIDS);
+        buildDefaultIndex(Constants.TBL_FILM_NOT_FOR_KIDS);
     }
 
     public static void buildFilmAndOrTVIndices() {
