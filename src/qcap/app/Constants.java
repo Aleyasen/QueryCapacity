@@ -115,33 +115,35 @@ public class Constants {
     public static final String TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM = "tbl_tv_program_union_film_and_tv_program";
     public static final String TBL_FILM_UNION_FILM_AND_TV_PROGRAM = "tbl_film_union_film_and_tv_program";
     public static final String TBL_OTHER_UNION_FILM_AND_TV_PROGRAM = "tbl_other_union_film_and_tv_program";
-    
+
     public static final String TBL_FILM_W_NOTABLE_TYPE = "tbl_film_w_notable_type";
-    public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE = "tbl_tv_program_w_notable_type";  
-    
+    public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE = "tbl_tv_program_w_notable_type";
+
     public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_FILM_TEXT = "tbl_tv_program_w_notable_type_union_film_text";
     public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_MOVIE_TEXT = "tbl_tv_program_w_notable_type_union_movie_text";
     public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TV_TEXT = "tbl_tv_program_w_notable_type_union_tv_text";
     public static final String TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TELEVISION_TEXT = "tbl_tv_program_w_notable_type_union_television_text";
-    
+
     public static final String TBL_FILM_W_NOTABLE_TYPE_UNION_FILM_TEXT = "tbl_film_w_notable_type_union_film_text";
     public static final String TBL_FILM_W_NOTABLE_TYPE_UNION_MOVIE_TEXT = "tbl_film_w_notable_type_union_movie_text";
     public static final String TBL_FILM_W_NOTABLE_TYPE_UNION_TV_TEXT = "tbl_film_w_notable_type_union_tv_text";
     public static final String TBL_FILM_W_NOTABLE_TYPE_UNION_TELEVISION_TEXT = "tbl_film_w_notable_type_union_television_text";
-    
+
     public static final String TBL_TV_PROGRAM_NOT_AFTER_2000 = "tbl_tv_program_not_after_2000";
     public static final String TBL_FILM_NOT_AFTER_2000 = "tbl_film_not_after_2000";
     public static final String TBL_TV_PROGRAM_AFTER_2000_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_after_2000_union_other_tv_program";
     public static final String TBL_FILM_AFTER_2000_UNION_OTHER_FILM = "tbl_film_after_2000_union_other_film";
-    
-    
+
+    public static final String TBL_TV_PROGRAM_NOT_80S_90S = "tbl_tv_program_not_80s_90s";
+    public static final String TBL_FILM_NOT_80S_90S = "tbl_film_not_80s_90s";
+    public static final String TBL_TV_PROGRAM_80S_90S_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_80s_90s_union_other_tv_program";
+    public static final String TBL_FILM_80S_90S_UNION_OTHER_FILM = "tbl_film_80s_90s_union_other_film";
+
     public static final String TBL_TV_PROGRAM_NOT_FOR_KIDS = "tbl_tv_program_not_for_kids";
     public static final String TBL_FILM_NOT_FOR_KIDS = "tbl_film_not_for_kids";
     public static final String TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_for_kids_union_other_tv_program";
     public static final String TBL_FILM_FOR_KIDS_UNION_OTHER_FILM = "tbl_film_for_kids_union_other_film";
-    
-    
-    
+
     public static final String TBL_TV_PROGRAM_W_TYPE = "tbl_tv_program_w_type";
     public static final String TBL_FILM_W_TYPE = "tbl_film_w_type";
     public static final String TBL_FILM_AND_TV_PROGRAM_W_TYPE = "tbl_film_and_tv_program_w_type";
@@ -181,7 +183,6 @@ public class Constants {
         table.put("film_name", "tbl_film");
         table.put("film_description", "tbl_film");
 
-
         //book
         table.put("book_name", "tbl_book");
         table.put("book_description", "tbl_book");
@@ -220,7 +221,6 @@ public class Constants {
         //tv_program
         attribute.put("film_name", "name");
         attribute.put("film_description", "description");
-
 
         //book
         attribute.put("book_name", "name");
