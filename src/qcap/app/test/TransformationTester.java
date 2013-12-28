@@ -45,6 +45,7 @@ public class TransformationTester {
                 count++;
                 System.out.println("Desired: " + q.getEntityId() + " " + q.getFbid() + " " + q.getId());
                 Integer sourceCollection = null;
+                QueryResult.printQueryResult(results, 30, "tv_program");
                 for (QueryResult qr : results) {
                     if (qr.getFbid().equals(q.getFbid())) {
                         sourceCollection = qr.getSourceCollection();

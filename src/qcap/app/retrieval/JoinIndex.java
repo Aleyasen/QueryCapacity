@@ -75,12 +75,12 @@ public class JoinIndex extends Index {
                 Index sideInd = sidesQueryMap.get(subQuery);
                 List<QueryResult> sideResults = sideInd.retrieve(subQuery, ranking);
                 System.out.println("Side Result");
-                printQueryResult(sideResults, 100, "profession");
+                QueryResult.printQueryResult(sideResults, 100, "profession");
                 List<QueryResult> joinResults = joinResult(coreResults, sideResults, sideInd);
                 System.out.println("Join Result");
                 Collections.sort(joinResults, new QueryResultComparator());
 
-                printQueryResult(joinResults, 1000, "person");
+                QueryResult.printQueryResult(joinResults, 1000, "person");
                 System.out.println("SubQuery:" + subQuery + " Index:" + sideInd);
                 coreResults = joinResults;
                 System.out.println("SideResults#:" + sideResults.size() + " JoinResult#:" + joinResults.size());
@@ -98,7 +98,7 @@ public class JoinIndex extends Index {
                 System.out.println("Number or Core Results:" + coreResults.size());
                 for (QueryResult result : coreResults) {
                     int attrCount = 0;
-                    printQueryResult(result, "person");
+                    QueryResult.printQueryResult(result, "person");
                     double totalScore = result.getScore();
                     System.out.println("core score"+result.getScore());
                     //calculate totalWeight
@@ -121,7 +121,7 @@ public class JoinIndex extends Index {
                 }
             }
             Collections.sort(coreResults, new QueryResultComparator());
-            printQueryResult(coreResults, 1000, "person");
+            QueryResult.printQueryResult(coreResults, 1000, "person");
             return coreResults;
         } catch (Exception ex) {
             System.out.println("Exception ON >>>>>>>>>>>> " + query);
@@ -206,24 +206,6 @@ public class JoinIndex extends Index {
             return str.substring(0, str.length() - 1);
         } else {
             return str;
-        }
-    }
-
-    private void printQueryResult(List<QueryResult> results, int max, String type) {
-        for (QueryResult qr : results) {
-            max--;
-            if (max == 0) {
-                break;
-            }
-            printQueryResult(qr, type);
-        }
-    }
-
-    private void printQueryResult(QueryResult result, String type) {
-        System.out.println(DBManager.getName(result.getFbid(), type) + result);
-        for (QueryResult indv : result.getIndvResults()) {
-            System.out.println("Indv: " + DBManager.getName(indv.getFbid(), "profession") + indv);
-
         }
     }
 }

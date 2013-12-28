@@ -38,8 +38,8 @@ public class FilmTVNewRelease extends TransformationTester {
     }
 
     public static void main(String[] args) {
-//        testSourceSchema("tv__film_new_release_source_schema_1.txt");
-        testTargetSchema("tv_film_new_release_target_schema_2.txt");
+//        testSourceSchema("tv__film_new_release_source_schema_4.txt");
+        testTargetSchema("tv_film_new_release_target_schema_4.txt");
     }
 
     public static void testSourceSchema(String resultFile) {
