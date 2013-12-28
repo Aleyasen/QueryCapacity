@@ -19,9 +19,10 @@ import qcap.app.retrieval.Field;
  * @author aleyase2
  */
 public class initializition {
-    
+
     public static void main(String[] args) {
-        buildFilmTVForKidsIndices();
+        buildFilmTV80s_90sIndices();
+//        buildFilmTVForKidsIndices();
 //        buildFilmTVNewReleaseIndices();
 //        buildFilmTVNotableTypeIndices();
 //        buildFilmAndOrTVIndices();
@@ -30,7 +31,7 @@ public class initializition {
         //    buildProfessionViews();
         // buildEducationViews();
     }
-    
+
     public static void buildFilmTVNotableTypeIndices() {
 //        buildDefaultIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TV_TEXT);
 //        buildDefaultIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE_UNION_TELEVISION_TEXT);
@@ -39,15 +40,21 @@ public class initializition {
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_W_NOTABLE_TYPE);
         buildDefaultIndex(Constants.TBL_FILM_W_NOTABLE_TYPE);
     }
-    
-    
+
     public static void buildFilmTVNewReleaseIndices() {
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_AFTER_2000_UNION_OTHER_TV_PROGRAM);
         buildDefaultIndex(Constants.TBL_FILM_AFTER_2000_UNION_OTHER_FILM);
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_NOT_AFTER_2000);
         buildDefaultIndex(Constants.TBL_FILM_NOT_AFTER_2000);
     }
-    
+
+    public static void buildFilmTV80s_90sIndices() {
+        buildDefaultIndex(Constants.TBL_TV_PROGRAM_80S_90S_UNION_OTHER_TV_PROGRAM);
+        buildDefaultIndex(Constants.TBL_FILM_80S_90S_UNION_OTHER_FILM);
+        buildDefaultIndex(Constants.TBL_TV_PROGRAM_NOT_80S_90S);
+        buildDefaultIndex(Constants.TBL_FILM_NOT_80S_90S);
+    }
+
     public static void buildFilmTVForKidsIndices() {
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM);
         buildDefaultIndex(Constants.TBL_FILM_FOR_KIDS_UNION_OTHER_FILM);
@@ -63,21 +70,21 @@ public class initializition {
 //        buildIndex(Constants.TBL_TV_PROGRAM_UNION_FILM_AND_TV_PROGRAM, fields);
         buildIndex(Constants.TBL_OTHER_UNION_FILM_AND_TV_PROGRAM, fields);
     }
-    
+
     public static void buildSemanticTypesTable() {
 //        buildTables(Constants.TBL_BOOK);
 //        buildTables(Constants.TBL_ALBUM);
         //    buildTables(Constants.VI_FILM_TV_GAME);
 
         buildDefaultIndex(Constants.VI_ALBUM_BOOK);
-        
+
         buildDefaultIndex(Constants.VI_FILM_TV);
-        
+
         buildDefaultIndex(Constants.VI_GAME_ALBUM);
-        
+
         buildDefaultIndex(Constants.VI_BOOK);
     }
-    
+
     public static void buildAllPersonTable() {
 //        buildDefaultIndex(Constants.TBL_PERSON);
 //        buildTables(Constants.TBL_PROFESSION, false);
@@ -87,7 +94,7 @@ public class initializition {
 //        buildDefaultIndex(Constants.VI_PERSON_PROFESSION_OTHER);
         buildIndexOnlyName(Constants.TBL_EDUCATION);
     }
-    
+
     public static void buildEducationViews() {
         buildDefaultIndex(Constants.VI_PERSON_EDU_HONG_KONG_COLLEGE_OF_MEDICINE_FOR_CHINESE);
         buildDefaultIndex(Constants.VI_PERSON_EDU_UNIVERSITY_OF_KENTUCKY);
@@ -100,7 +107,7 @@ public class initializition {
         buildDefaultIndex(Constants.VI_PERSON_EDU_UNIVERSITY_OF_CALIFORNIA_LOS_ANGELES);
         buildDefaultIndex(Constants.VI_PERSON_EDU_SOUTH_SIDE_HIGH_SCHOOL);
     }
-    
+
     public static void buildProfessionViews() {
         buildDefaultIndex(Constants.VI_PERSON_PROF_PROPHET);
         buildDefaultIndex(Constants.VI_PERSON_PROF_DESIGNER);
@@ -130,15 +137,15 @@ public class initializition {
         buildDefaultIndex(Constants.VI_PERSON_PROF_MATHEMATICIAN);
         buildDefaultIndex(Constants.VI_PERSON_PROF_JOURNALIST);
     }
-    
+
     public static void buildIndexOnlyName(String table) {
         buildIndex(table, Arrays.asList("name"));
     }
-    
+
     public static void buildDefaultIndex(String table) {
         buildIndex(table, Arrays.asList("name", "description"));
     }
-    
+
     public static void buildIndex(String table, List<String> fields) {
         Connection conn = new DBManager().getConnection();
         BaseIndex index = getIndexMetadata(table, fields);
@@ -152,7 +159,7 @@ public class initializition {
         }
         index.save();
     }
-    
+
     public static BaseIndex getIndexMetadata(String tableName, List<String> fields) {
         BaseIndex mdata = new BaseIndex();
         mdata.setTable(tableName);
@@ -161,7 +168,7 @@ public class initializition {
             fieldStr += ", " + field;
         }
         mdata.setQuery("select id, fbid" + fieldStr + " from " + tableName);
-        
+
         mdata.setIndexDirectory(AppConfig.BASE_DIR + "/index/" + tableName + "/");
         mdata.setTrecFile(AppConfig.BASE_DIR + "/trec/" + tableName + ".trectext");
         mdata.setQueryFile(AppConfig.BASE_DIR + "/query/" + tableName + ".query");
