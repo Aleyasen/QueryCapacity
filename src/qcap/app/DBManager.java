@@ -57,7 +57,7 @@ public class DBManager {
 
     public static String getName(String fbid, String type) {
         try {
-            String query = "SELECT * FROM freebase.tbl_" + type + " where fbid=\"" + fbid + "\"";
+            String query = "SELECT * FROM tbl_" + type + " where fbid=\"" + fbid + "\"";
             ResultSet rs = execQuery(query);
             while (rs.next()) {
                 String name = rs.getString("name");
