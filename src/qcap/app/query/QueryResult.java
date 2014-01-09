@@ -23,7 +23,7 @@ public class QueryResult {
     public static void printQueryResult(QueryResult result, String type) {
         System.out.println(DBManager.getName(result.getFbid(), type) + result);
         for (QueryResult indv : result.getIndvResults()) {
-            System.out.println("Indv: " + DBManager.getName(indv.getFbid(), "profession") + indv);
+            System.out.println("Indv: " + DBManager.getName(indv.getFbid(), type) + indv);
         }
     }
 
