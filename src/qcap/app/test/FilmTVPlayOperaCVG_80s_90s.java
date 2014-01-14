@@ -16,7 +16,7 @@ import qcap.app.retrieval.BaseIndex;
  *
  * @author aleyase2-admin
  */
-public class FilmTVPlayOperaCVG_80s_90s1 extends TransformationTester {
+public class FilmTVPlayOperaCVG_80s_90s extends TransformationTester {
 
     public static List<Integer> q_desired_tv_contain_tv;
     public static List<Integer> q_desired_tv_not_contain_tv;
@@ -38,17 +38,19 @@ public class FilmTVPlayOperaCVG_80s_90s1 extends TransformationTester {
         q_desired_film_not_contain_film = Arrays.asList(44882, 50041, 43019, 43267, 43580,
                 45110, 45192, 45347, 45516, 45596, 47052, 47059, 48368, 48442, 48788,
                 48964, 49375, 49512, 49708, 49730, 49800, 49863, 48494);
+        
         q_desired_film_contain_film = Arrays.asList(44882, 50041);
         q_desired_tv_not_contain_tv = Arrays.asList(43891, 44456, 45755, 47936, 44384, 45123, 46367, 47030,
                 48640, 48685, 44124, 46079, 46551, 47906, 49189);
-        q_desired_opera_contain_opera = Arrays.asList();
+        
+        q_desired_opera_contain_opera = Arrays.asList(44667, 50152);
         q_desired_opera_not_contain_opera = Arrays.asList();
 
-        q_desired_play_contain_play = Arrays.asList();
-        q_desired_play_not_contain_play = Arrays.asList();
+        q_desired_play_contain_play = Arrays.asList(44144, 46818, 47739, 49324);
+        q_desired_play_not_contain_play = Arrays.asList(47158, 47254, 44634);
 
-        q_desired_game_contain_game = Arrays.asList();
-        q_desired_game_not_contain_game = Arrays.asList();
+        q_desired_game_contain_game = Arrays.asList(42858, 43944, 44359, 44637, 44909, 45079, 45721, 45791, 46092, 46140, 47946, 48601, 48824, 49413, 49518, 49677);
+        q_desired_game_not_contain_game = Arrays.asList(45277, 47239, 49816, 42599, 43041, 44670, 50212);
 
     }
 
@@ -121,7 +123,6 @@ public class FilmTVPlayOperaCVG_80s_90s1 extends TransformationTester {
         Collection<Query> q_desired_game_contain_game_obj = Query.findById(q_desired_game_contain_game);
         Collection<Query> q_desired_game_not_contain_game_obj = Query.findById(q_desired_game_not_contain_game);
 
-
 //        Collection<Query> queries = Query.findById(47654);
         List<String> filmTVOperaPlayCVGacceptList = Arrays.asList("tv_program_name", "tv_program_description",
                 "film_name", "film_description",
@@ -140,22 +141,19 @@ public class FilmTVPlayOperaCVG_80s_90s1 extends TransformationTester {
 
         BaseIndex film_not_80s_90s_index = new BaseIndex(Constants.TBL_FILM_NOT_80S_90S);
         film_not_80s_90s_index.setAcceptList(filmTVOperaPlayCVGacceptList);
-        
-        
+
         BaseIndex play_80s_90s_union_other_play_index = new BaseIndex(Constants.TBL_PLAY_80S_90S_UNION_OTHER_PLAY);
         play_80s_90s_union_other_play_index.setAcceptList(filmTVOperaPlayCVGacceptList);
 
         BaseIndex play_not_80s_90s_index = new BaseIndex(Constants.TBL_PLAY_NOT_80S_90S);
         play_not_80s_90s_index.setAcceptList(filmTVOperaPlayCVGacceptList);
-        
-        
+
         BaseIndex opera_80s_90s_union_other_opera_index = new BaseIndex(Constants.TBL_OPERA_80S_90S_UNION_OTHER_OPERA);
         opera_80s_90s_union_other_opera_index.setAcceptList(filmTVOperaPlayCVGacceptList);
 
         BaseIndex opera_not_80s_90s_index = new BaseIndex(Constants.TBL_OPERA_NOT_80S_90S);
         opera_not_80s_90s_index.setAcceptList(filmTVOperaPlayCVGacceptList);
-        
-        
+
         BaseIndex game_80s_90s_union_other_game_index = new BaseIndex(Constants.TBL_GAME_80S_90S_UNION_OTHER_GAME);
         game_80s_90s_union_other_game_index.setAcceptList(filmTVOperaPlayCVGacceptList);
 
@@ -167,13 +165,13 @@ public class FilmTVPlayOperaCVG_80s_90s1 extends TransformationTester {
 
         execBatchQueries(q_desired_film_contain_film_obj, film_80s_90s_union_other_film_index, AppConfig.RESULT_DIR + resultFile);
         execBatchQueries(q_desired_film_not_contain_film_obj, film_not_80s_90s_index, AppConfig.RESULT_DIR + resultFile);
-        
+
         execBatchQueries(q_desired_play_contain_play_obj, play_80s_90s_union_other_play_index, AppConfig.RESULT_DIR + resultFile);
         execBatchQueries(q_desired_play_not_contain_play_obj, play_not_80s_90s_index, AppConfig.RESULT_DIR + resultFile);
-        
+
         execBatchQueries(q_desired_opera_contain_opera_obj, opera_80s_90s_union_other_opera_index, AppConfig.RESULT_DIR + resultFile);
         execBatchQueries(q_desired_opera_not_contain_opera_obj, opera_not_80s_90s_index, AppConfig.RESULT_DIR + resultFile);
-        
+
         execBatchQueries(q_desired_game_contain_game_obj, game_80s_90s_union_other_game_index, AppConfig.RESULT_DIR + resultFile);
         execBatchQueries(q_desired_game_not_contain_game_obj, game_not_80s_90s_index, AppConfig.RESULT_DIR + resultFile);
 
