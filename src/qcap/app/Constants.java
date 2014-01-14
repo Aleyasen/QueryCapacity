@@ -200,6 +200,7 @@ public class Constants {
         // instance2.put("semantic_type", "name");
         table.put("book_subjects", "tbl_subject");
         table.put("book_characters", "tbl_character");
+        
 
         //person
         attribute = new HashMap<String, String>();
@@ -228,10 +229,22 @@ public class Constants {
         attribute.put("original_network", "name");
         attribute.put("tv_program_genre", "name");
 
-        //tv_program
+        //film
         attribute.put("film_name", "name");
         attribute.put("film_description", "description");
+        
+        //opera
+        attribute.put("opera_name", "name");
+        attribute.put("opera_description", "description");
 
+        //play
+        attribute.put("play_name", "name");
+        attribute.put("play_description", "description");
+        
+        //game
+        attribute.put("computer_videogame_name", "name");
+        attribute.put("computer_videogame_description", "description");
+        
         //book
         attribute.put("book_name", "name");
         attribute.put("book_description", "description");
