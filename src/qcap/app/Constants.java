@@ -136,13 +136,23 @@ public class Constants {
 
     public static final String TBL_TV_PROGRAM_NOT_80S_90S = "tbl_tv_program_not_80s_90s";
     public static final String TBL_FILM_NOT_80S_90S = "tbl_film_not_80s_90s";
+    public static final String TBL_OPERA_NOT_80S_90S = "tbl_opera_not_80s_90s";
+    public static final String TBL_PLAY_NOT_80S_90S = "tbl_play_not_80s_90s";
+    public static final String TBL_GAME_NOT_80S_90S = "tbl_game_not_80s_90s";
     public static final String TBL_TV_PROGRAM_80S_90S_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_80s_90s_union_other_tv_program";
     public static final String TBL_FILM_80S_90S_UNION_OTHER_FILM = "tbl_film_80s_90s_union_other_film";
+    public static final String TBL_OPERA_80S_90S_UNION_OTHER_OPERA = "tbl_opera_80s_90s_union_other_opera";
+    public static final String TBL_PLAY_80S_90S_UNION_OTHER_PLAY = "tbl_play_80s_90s_union_other_play";
+    public static final String TBL_GAME_80S_90S_UNION_OTHER_GAME = "tbl_game_80s_90s_union_other_game";
 
     public static final String TBL_TV_PROGRAM_NOT_FOR_KIDS = "tbl_tv_program_not_for_kids";
     public static final String TBL_FILM_NOT_FOR_KIDS = "tbl_film_not_for_kids";
     public static final String TBL_TV_PROGRAM_FOR_KIDS_UNION_OTHER_TV_PROGRAM = "tbl_tv_program_for_kids_union_other_tv_program";
     public static final String TBL_FILM_FOR_KIDS_UNION_OTHER_FILM = "tbl_film_for_kids_union_other_film";
+
+    public static final String TBL_OPERA = "tbl_opera";
+    public static final String TBL_PLAY = "tbl_play";
+    public static final String TBL_GAME = "tbl_game";
 
     public static final String TBL_TV_PROGRAM_W_TYPE = "tbl_tv_program_w_type";
     public static final String TBL_FILM_W_TYPE = "tbl_film_w_type";

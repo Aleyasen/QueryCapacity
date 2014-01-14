@@ -21,7 +21,7 @@ import qcap.app.retrieval.Field;
 public class initializition {
 
     public static void main(String[] args) {
-        buildFilmTV80s_90sIndices();
+        buildFilmTVOperaPlayCVG_80s_90sIndices();
 //        buildFilmTVForKidsIndices();
 //        buildFilmTVNewReleaseIndices();
 //        buildFilmTVNotableTypeIndices();
@@ -53,6 +53,19 @@ public class initializition {
         buildDefaultIndex(Constants.TBL_FILM_80S_90S_UNION_OTHER_FILM);
         buildDefaultIndex(Constants.TBL_TV_PROGRAM_NOT_80S_90S);
         buildDefaultIndex(Constants.TBL_FILM_NOT_80S_90S);
+    }
+
+    public static void buildFilmTVOperaPlayCVG_80s_90sIndices() {
+        buildDefaultIndex(Constants.TBL_OPERA);
+        buildDefaultIndex(Constants.TBL_OPERA_80S_90S_UNION_OTHER_OPERA);
+        buildDefaultIndex(Constants.TBL_OPERA_NOT_80S_90S);
+        buildDefaultIndex(Constants.TBL_PLAY);
+        buildDefaultIndex(Constants.TBL_PLAY_80S_90S_UNION_OTHER_PLAY);
+        buildDefaultIndex(Constants.TBL_PLAY_NOT_80S_90S);
+        buildDefaultIndex(Constants.TBL_GAME);
+        buildDefaultIndex(Constants.TBL_GAME_80S_90S_UNION_OTHER_GAME);
+        buildDefaultIndex(Constants.TBL_GAME_NOT_80S_90S);
+
     }
 
     public static void buildFilmTVForKidsIndices() {
